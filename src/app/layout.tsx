@@ -20,11 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/pretendard.css"
+          href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/variable/pretendardvariable.css"
         />
       </head>
-      <body>
-        <div className="main-container">{children}</div>
+      <body className="flex min-h-screen flex-col items-center">
+        <div className="main-container min-h-screen w-full max-w-[430px]">{children}</div>
         <ServiceWorkerRegister />
       </body>
     </html>
