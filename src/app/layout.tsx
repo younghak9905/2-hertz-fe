@@ -1,4 +1,3 @@
-// app/layout.tsx
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import './globals.css';
 import type { Metadata } from 'next';
@@ -8,6 +7,11 @@ export const metadata: Metadata = {
   description: '조직 기반 소셜 매칭 서비스',
   manifest: '/manifest.webmanifest',
   themeColor: '#000000',
+  viewport:
+    'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=auto',
+  icons: {
+    icon: '/icons/favicon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
