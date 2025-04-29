@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -44,7 +44,19 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  /* service colors */
+  --blue: #84a7ff;
+  --pink: #ff007b;
+  --light-blue: #e7f1ff;
+  --light-pink: #ffe5f2;
+  --white: #ffffff;
+  --gray-100: #f1f5f9;
+  --gray-200: #c7cfd8;
+  --gray-300: #8997a4;
+  --gray-400: #495057;
+  --black: #000000;
+
+  /* default colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
@@ -119,4 +131,22 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html,
+body {
+  @apply bg-background text-foreground;
+  height: 100%;
+  background-color: var(--blue);
+}
+
+.main-container {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 0 4px;
+  min-height: 100%;
+  background-color: white;
+  color: var(--foreground);
+  box-sizing: border-box;
 }
