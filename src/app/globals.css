@@ -136,6 +136,7 @@
 html,
 body {
   @apply bg-background text-foreground;
+  font-family: 'Pretendard', sans-serif;
   height: 100%;
   background-color: var(--blue);
 }
