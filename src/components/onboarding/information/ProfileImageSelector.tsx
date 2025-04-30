@@ -36,6 +36,7 @@ export default function ProfileImageSelector({ selectedUrl, onSelect }: ProfileI
 
           return (
             <button
+              type="button"
               key={url}
               onClick={() => onSelect(url)}
               className={`relative aspect-square overflow-hidden rounded-full border-2 transition-all duration-200 ${
