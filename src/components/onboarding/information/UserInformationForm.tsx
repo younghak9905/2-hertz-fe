@@ -2,6 +2,7 @@
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { useState } from 'react';
+import { Button } from '@components/ui/button';
 
 import ProfileImageSelector from '@components/onboarding/information/ProfileImageSelector';
 import EmailInputSection from '@components/onboarding/information/EmailInputSection';
@@ -9,6 +10,7 @@ import GenderSelectGroup from '@components/onboarding/information/GenderSelectGr
 import RandomNicknameButton from '@components/onboarding/information/RandomNicknameButton';
 import OneLineIntroductionInput from '@components/onboarding/information/OneLineIntroductionInput';
 import MatchingAgreementToggleGroup from '@components/onboarding/information/MatchingAgreementToggleGroup';
+import AgeGroupSelector from './AgeGroupSelector';
 
 export default function UserInformationForm() {
   const methods = useForm({
@@ -30,14 +32,23 @@ export default function UserInformationForm() {
 
   return (
     <FormProvider {...methods}>
-      <form className="space-y-8">
+      <form className="space-y-10">
         <ProfileImageSelector selectedUrl={selectedImage} onSelect={setSelectedImage} />
         <EmailInputSection onVerify={handleVerify} isVerified={isEmailVerified} />
         <GenderSelectGroup />
+        <AgeGroupSelector />
         <RandomNicknameButton />
         <OneLineIntroductionInput />
         <MatchingAgreementToggleGroup />
       </form>
+      <div className="mt-4 flex justify-center">
+        <Button
+          type="submit"
+          className="mt-4 w-[20rem] rounded-[6] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
+        >
+          다음으로
+        </Button>
+      </div>
     </FormProvider>
   );
 }

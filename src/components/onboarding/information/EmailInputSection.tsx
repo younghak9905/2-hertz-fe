@@ -99,19 +99,19 @@ export default function EmailInputSection({ onVerify, isVerified }: EmailInputSe
           placeholder="tuning@hertz.com"
           {...register('email')}
           onKeyDown={handleKeyDown}
-          className="h-11 flex-1 rounded-[6px] border-none bg-gray-100 text-sm"
+          className="h-11 flex-1 rounded-[6px] border-none bg-[var(--gray-100)] text-sm"
         />
         <Button
           type="button"
           onClick={handleRequestVerification}
           className={`h-11 rounded-[6px] px-4 text-sm transition-colors duration-200 ${
             isVerified
-              ? 'bg-gray-100 text-black'
+              ? 'bg-[var(--gray-200)] text-black'
               : isCooldown
-                ? 'bg-gray-500 text-white'
+                ? 'bg-[var(--gray-400)] text-white'
                 : isValidEmail
-                  ? 'bg-gray-300 text-black hover:bg-gray-400'
-                  : 'cursor-not-allowed bg-gray-100 text-gray-400'
+                  ? 'bg-[var(--gray-400)] text-white hover:bg-[var(--gray-400)]'
+                  : 'cursor-not-allowed bg-[var(--gray-200)] text-[var(--gray-400)]'
           }`}
           disabled={!isValidEmail || isVerified || isCooldown}
         >
