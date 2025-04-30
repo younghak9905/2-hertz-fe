@@ -1,5 +1,5 @@
-import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
-import './globals.css';
+import ServiceWorkerRegister from '@components/ServiceWorkerRegister';
+import '@app/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`${pretendard.variable} font-pretendard flex min-h-screen flex-col items-center`}
       >
-        <div className="main-container h-14 min-h-screen w-full max-w-[430px]">{children}</div>
+        <div className="main-container min-h-screen w-full max-w-[430px] pt-14">{children}</div>
         <ServiceWorkerRegister />
       </body>
     </html>
