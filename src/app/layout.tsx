@@ -1,6 +1,14 @@
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister';
 import './globals.css';
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+
+const pretendard = localFont({
+  src: '../fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
   title: '튜닝',
@@ -17,14 +25,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/variable/pretendardvariable.css"
-        />
-      </head>
-      <body className="flex min-h-screen flex-col items-center">
-        <div className="main-container min-h-screen w-full max-w-[430px]">{children}</div>
+      <body
+        className={`${pretendard.variable} font-pretendard flex min-h-screen flex-col items-center`}
+      >
+        <div className="main-container h-14 min-h-screen w-full max-w-[430px]">{children}</div>
         <ServiceWorkerRegister />
       </body>
     </html>
