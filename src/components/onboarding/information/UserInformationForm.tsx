@@ -11,8 +11,11 @@ import RandomNicknameButton from '@components/onboarding/information/RandomNickn
 import OneLineIntroductionInput from '@components/onboarding/information/OneLineIntroductionInput';
 import MatchingAgreementToggleGroup from '@components/onboarding/information/MatchingAgreementToggleGroup';
 import AgeGroupSelector from './AgeGroupSelector';
+import { useRouter } from 'next/navigation';
 
 export default function UserInformationForm() {
+  const router = useRouter();
+
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -30,6 +33,10 @@ export default function UserInformationForm() {
     return true;
   };
 
+  const handleSubmit = async () => {
+    router.push('/onboarding/interests');
+  };
+
   return (
     <FormProvider {...methods}>
       <form className="space-y-10">
@@ -43,6 +50,7 @@ export default function UserInformationForm() {
       </form>
       <div className="mt-4 flex justify-center">
         <Button
+          onClick={handleSubmit}
           type="submit"
           className="mt-8 mb-4 w-full rounded-[8] bg-[var(--gray-400)] px-4 py-4 text-center text-sm font-semibold text-white"
         >
