@@ -1,3 +1,4 @@
+@import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/variable/pretendardvariable.css');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -54,6 +55,8 @@
   --gray-200: #c7cfd8;
   --gray-300: #8997a4;
   --gray-400: #495057;
+  --gray-500: #2a333c;
+
   --black: #000000;
 
   /* default colors */
@@ -136,15 +139,16 @@
 html,
 body {
   @apply bg-background text-foreground;
+  font-family: 'Pretendard', sans-serif;
   height: 100%;
-  background-color: var(--blue);
+  background-color: white;
 }
 
 .main-container {
+  padding: 3em 0.5em;
   width: 100%;
   max-width: 430px;
   margin: 0 auto;
-  padding: 0 4px;
   min-height: 100%;
   background-color: white;
   color: var(--foreground);
