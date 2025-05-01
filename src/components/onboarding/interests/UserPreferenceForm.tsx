@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InterestStep2 from './InterestStep2';
 import InterestStep3 from './InterestStep3';
 import InterestStep4 from './InterestStep4';
@@ -14,6 +14,10 @@ export default function UserPreferenceForm() {
     if (step < 4) setStep((prev) => prev + 1);
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
+
   return (
     <main className="space-y-4 px-2">
       <div>
@@ -25,7 +29,7 @@ export default function UserPreferenceForm() {
           <Button
             onClick={goNextPage}
             type="submit"
-            className="mb-4 w-full max-w-lg rounded-[6] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
+            className="mb-4 w-full max-w-lg rounded-[8] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
           >
             <p>{step === 4 ? '저장하기' : '다음으로'}</p>
           </Button>

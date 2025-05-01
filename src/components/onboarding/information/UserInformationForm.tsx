@@ -44,7 +44,7 @@ export default function UserInformationForm() {
       <div className="mt-4 flex justify-center">
         <Button
           type="submit"
-          className="mt-8 mb-4 w-full rounded-[6] bg-[var(--gray-400)] px-4 py-4 text-center text-sm font-semibold text-white"
+          className="mt-8 mb-4 w-full rounded-[8] bg-[var(--gray-400)] px-4 py-4 text-center text-sm font-semibold text-white"
         >
           다음으로
         </Button>

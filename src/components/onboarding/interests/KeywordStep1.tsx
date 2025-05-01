@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { MBTI, Religion, Drinking, Smoking } from '@/constants/enum';
+import HorizonBar from '@/components/common/horizonBar';
 
 export default function KeywordStep1() {
-  const [selectedMBTI, setSelectedMBTI] = useState<string | null>(null);
-  const [selectedReligion, setSelectedReligion] = useState<string | null>(null);
-  const [selectedDrinking, setSelectedDrinking] = useState<string | null>(null);
-  const [selectedSmoking, setSelectedSmoking] = useState<string | null>(null);
+  const [selectedMBTI, setSelectedMBTI] = useState<string>('');
+  const [selectedReligion, setSelectedReligion] = useState<string>('');
+  const [selectedDrinking, setSelectedDrinking] = useState<string>('');
+  const [selectedSmoking, setSelectedSmoking] = useState<string>('');
 
   return (
     <>
@@ -19,6 +20,8 @@ export default function KeywordStep1() {
         selected={selectedMBTI}
         onSelect={setSelectedMBTI}
       />
+      <HorizonBar />
+
       <EnumSelectGrid
         title="종교가 있으신가요?"
         description="* 단일 선택 가능"
@@ -26,6 +29,8 @@ export default function KeywordStep1() {
         selected={selectedReligion}
         onSelect={setSelectedReligion}
       />
+      <HorizonBar />
+
       <EnumSelectGrid
         title="음주를 하시나요?"
         description="* 단일 선택 가능"
@@ -33,6 +38,8 @@ export default function KeywordStep1() {
         selected={selectedDrinking}
         onSelect={setSelectedDrinking}
       />
+      <HorizonBar />
+
       <EnumSelectGrid
         title="흡연을 하시나요?"
         description="* 단일 선택 가능"
