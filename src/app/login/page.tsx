@@ -26,7 +26,7 @@ export default function LoginPage() {
       </p>
 
       <div
-        onClick={getKakaoRedirect}
+        onClick={handleLogin}
         className="cursor-pointer hover:opacity-90 transition active:scale-98"
       >
         <Image
