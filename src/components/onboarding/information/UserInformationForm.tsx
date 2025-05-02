@@ -13,8 +13,20 @@ import MatchingAgreementToggleGroup from '@components/onboarding/information/Mat
 import AgeGroupSelector from './AgeGroupSelector';
 import { useRouter } from 'next/navigation';
 
-export default function UserInformationForm() {
+interface UserInformationFormProps {
+  providerId: string;
+}
+
+export default function UserInformationForm({ providerId }: UserInformationFormProps) {
   const router = useRouter();
+
+  const [selectedImage, setSelectedImage] = useState('');
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  const handleVerify = async () => {
+    setIsEmailVerified(true);
+    return true;
+  };
 
   const methods = useForm({
     defaultValues: {
@@ -25,17 +37,15 @@ export default function UserInformationForm() {
     },
   });
 
-  const [selectedImage, setSelectedImage] = useState('');
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const handleSubmit = methods.handleSubmit(async (data) => {
+    const payload = {
+      ...data,
+      providerId,
+      profileImage: selectedImage,
+    };
 
-  const handleVerify = async () => {
-    setIsEmailVerified(true);
-    return true;
-  };
-
-  const handleSubmit = async () => {
     router.push('/onboarding/interests');
-  };
+  });
 
   return (
     <FormProvider {...methods}>
