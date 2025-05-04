@@ -1,5 +1,5 @@
 import UserPreferenceForm from '@/components/onboarding/interests/UserPreferenceForm';
-import Header from '@components/common/Header';
+import Header from '@/components/layout/Header';
 
 export default function OnboardingInterestsPage() {
   return (

@@ -143,14 +143,3 @@ body {
   height: 100%;
   background-color: white;
 }
-
-.main-container {
-  padding: 3em 0.5em;
-  width: 100%;
-  max-width: 430px;
-  margin: 0 auto;
-  min-height: 100%;
-  background-color: white;
-  color: var(--foreground);
-  box-sizing: border-box;
-}

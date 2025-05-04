@@ -1,5 +1,5 @@
 import KeywordTagGroup from '@/components/matching/individual/KeywordTagGroup';
-import Header from '@components/common/Header';
+import Header from '@/components/layout/Header';
 import TuningProfileCard from '@components/matching/individual/TuningProfileCard';
 
 export default function IndividualMatchingPage() {

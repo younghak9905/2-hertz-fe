@@ -3,6 +3,7 @@ import '@app/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Toaster } from 'react-hot-toast';
+import ClientLayoutContent from '@/components/layout/ClientLayoutContent';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -27,9 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} font-pretendard flex min-h-screen flex-col items-center overflow-y-auto`}
+        className={`${pretendard.variable} font-pretendard flex min-h-screen flex-col items-center`}
       >
-        <div className="main-container min-h-screen w-full max-w-[430px] pt-14">{children}</div>
+        <ClientLayoutContent>{children}</ClientLayoutContent>
         <Toaster />
         <ServiceWorkerRegister />
       </body>
