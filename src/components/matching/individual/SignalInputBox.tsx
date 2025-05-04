@@ -25,7 +25,7 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
   };
 
   return (
-    <div className="mt-10 flex w-full items-center justify-between rounded-full bg-[#f2f6fa] px-2 py-1">
+    <div className="mt-10 mb-4 flex w-full items-center justify-between rounded-full bg-[#f2f6fa] px-2 py-1.5">
       <input
         type="text"
         value={value}
@@ -38,7 +38,7 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
         onClick={handleSend}
         className="ml-2 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow"
       >
-        <ArrowUp className="h-4 w-4 text-gray-700" />
+        <ArrowUp className="h-3.5 w-3.5 text-gray-700" />
       </button>
     </div>
   );

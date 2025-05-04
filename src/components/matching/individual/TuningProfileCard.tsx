@@ -10,11 +10,10 @@ interface TuningProfileCardProps {
 export default function TuningProfileCard({ selectedUrl }: TuningProfileCardProps) {
   return (
     <>
-      <div className="mx-auto mt-6 flex w-full flex-col items-center">
-        <button className="absolute top-0 right-0 z-10 translate-x-1/3 -translate-y-1/3">
-          <IoRefreshCircle className="text-[32px] text-[var(--gray-400)]" />
-        </button>
-
+      <button className="mt-4 flex w-full justify-end">
+        <IoRefreshCircle className="items-end text-[32px] text-[var(--gray-400)]" />
+      </button>
+      <div className="mx-auto flex w-full flex-col items-center">
         <div className="relative aspect-square w-full max-w-[6rem] rounded-full border border-[var(--gray-200)] p-2 ring-[var(--gray-100)]">
           <Image
             src={selectedUrl?.trim() ? selectedUrl : '/images/default-profile.png'}

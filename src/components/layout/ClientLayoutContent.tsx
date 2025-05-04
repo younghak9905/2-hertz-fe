@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import BottomNavigationBar from '@/components/common/BottomNavigationBar';
+import BottomNavigationBar from '@/components/layout/BottomNavigationBar';
 import Header from '@/components/layout/Header';
 
 const hiddenRoutes = ['/login', '/onboarding', '/not-found'];
@@ -12,7 +12,7 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
 
   return (
     <div className="relative flex min-h-[100dvh] w-full max-w-[430px] flex-col">
-      {!shouldHideUI && <Header title="튜닝" showNotificationButton />}
+      {!shouldHideUI && <Header title="" showBackButton={false} showNotificationButton={false} />}
       <div
         className="flex-grow overflow-y-auto"
         style={{

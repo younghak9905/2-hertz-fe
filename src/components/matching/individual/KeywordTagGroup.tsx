@@ -10,7 +10,7 @@ export default function KeywordTagGroup() {
     <>
       <main className="space-y-4 px-4">
         <div className="mb-8 space-y-4">
-          <p className="font-semibold">행복한 개구리 님의 키워드에요</p>
+          <p className="font-medium font-semibold">행복한 개구리 님의 키워드에요</p>
           <KeywordTag keywords={keywords} />
         </div>
 
