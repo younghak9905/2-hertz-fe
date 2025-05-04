@@ -7,7 +7,7 @@ import Header from '@components/common/Header';
 import UserInformationForm from '@components/onboarding/information/UserInformationForm';
 import toast from 'react-hot-toast';
 
-export default function OnboardingInformationPage() {
+export default function OnboardingInformationWrapper() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
