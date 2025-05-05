@@ -6,6 +6,9 @@ import Header from '@/components/layout/Header';
 
 const hiddenRoutes = ['/login', '/onboarding', '/not-found'];
 
+const HEADER_HEIGHT = 56;
+const BOTTOM_NAV_HEIGHT = 56;
+
 export default function ClientLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const shouldHideUI = hiddenRoutes.some((route) => pathname.startsWith(route));
@@ -16,8 +19,8 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
       <div
         className="flex-grow overflow-y-auto"
         style={{
-          paddingTop: shouldHideUI ? 0 : '3.5rem',
-          paddingBottom: shouldHideUI ? 0 : '3.5rem',
+          paddingTop: shouldHideUI ? 0 : `${HEADER_HEIGHT}px`,
+          paddingBottom: shouldHideUI ? 0 : `${BOTTOM_NAV_HEIGHT}px`,
         }}
       >
         {children}
