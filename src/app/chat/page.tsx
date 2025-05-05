@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Header from '@/components/layout/Header';
-import ChannelsGroupPage from './group/page';
-import ChannelsIndividualPage from './individual/page';
+import ChannelsGroupPage from '@/app/chat/group/page';
+import ChannelsIndividualPage from '@/app/chat/individual/page';
 
 export default function ChannelsPage() {
   const [selectedTab, setSelectedTab] = useState<'individual' | 'group'>('individual');
