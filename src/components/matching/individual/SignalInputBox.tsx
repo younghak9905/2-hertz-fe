@@ -25,7 +25,7 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
   };
 
   return (
-    <div className="mt-10 mb-4 flex w-full items-center justify-between rounded-full bg-[#f2f6fa] px-2 py-1.5">
+    <div className="flex w-full items-center justify-between rounded-full bg-[#f2f6fa] px-2 py-1.5">
       <input
         type="text"
         value={value}
