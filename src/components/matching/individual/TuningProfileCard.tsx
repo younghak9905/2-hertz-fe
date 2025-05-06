@@ -10,7 +10,7 @@ interface TuningProfileCardProps {
 export default function TuningProfileCard({ selectedUrl }: TuningProfileCardProps) {
   return (
     <>
-      <button className="mt-4 flex w-full justify-end">
+      <button className="flex w-full justify-end">
         <IoRefreshCircle className="items-end text-[32px] text-[var(--gray-400)]" />
       </button>
       <div className="mx-auto flex w-full flex-col items-center">
@@ -28,7 +28,7 @@ export default function TuningProfileCard({ selectedUrl }: TuningProfileCardProp
         <p className="truncate text-center text-sm text-[var(--gray-300)]">남성</p>
       </div>
 
-      <div className="mt-8 max-w-[25rem] rounded-3xl border-2 p-4">
+      <div className="mt-6 mb-6 max-w-[25rem] rounded-3xl border-2 p-4">
         <div className="w-full text-sm leading-relaxed font-light">
           지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. 그 울림을
           느껴보세요.
