@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { postKakaoLogin } from '@/lib/api/auth';
-import Header from '@components/common/Header';
+import Header from '@/components/layout/Header';
 import UserInformationForm from '@components/onboarding/information/UserInformationForm';
 import toast from 'react-hot-toast';
 

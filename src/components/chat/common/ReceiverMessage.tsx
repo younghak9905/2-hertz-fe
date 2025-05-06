@@ -1,0 +1,48 @@
+'use client';
+
+import dayjs from 'dayjs';
+import Image from 'next/image';
+
+interface ReceiverMessageProps {
+  nickname: string;
+  profileImage: string;
+  contents: string;
+  sentAt: string;
+}
+
+export default function ReceiverMessage({
+  nickname,
+  profileImage,
+  contents,
+  sentAt,
+}: ReceiverMessageProps) {
+  return (
+    <div className="flex items-start justify-start gap-1.5">
+      <div className="mr-2 flex flex-col items-center">
+        <div className="relative h-10 w-10 rounded-full bg-gradient-to-tr from-[#7BA1FF] via-[#7BA1FF] to-transparent p-[2px]">
+          <div className="h-full w-full rounded-full bg-white">
+            <Image
+              src={profileImage || '/images/default-profile.png'}
+              width={36}
+              height={36}
+              alt="상대 프로필"
+              className="rounded-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p className="mt-1 text-sm font-semibold text-[var(--gray-400)]">{nickname}</p>
+        <div className="mt-1.5 flex pr-4">
+          <div className="flex max-w-[16rem] items-end gap-2">
+            <div className="inline-block rounded-3xl border border-[var(--blue)] bg-white px-4 py-2 text-xs leading-[1.4] text-black">
+              {contents}
+            </div>
+            <p className="mt-1 text-xs text-[var(--gray-300)]">{dayjs(sentAt).format('HH:mm')}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
