@@ -32,7 +32,7 @@ export default function BottomNavigationBar() {
         <p className="text-[0.7rem] font-medium">리포트</p>
       </button>
       <button
-        onClick={() => router.push('/channels')}
+        onClick={() => router.push('/chat')}
         className="flex flex-col items-center gap-1 text-xs"
       >
         <PiChatCircleDotsBold className="h-[18px] w-[18px]" />
