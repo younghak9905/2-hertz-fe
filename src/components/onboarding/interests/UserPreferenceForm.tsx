@@ -6,13 +6,36 @@ import InterestStep3 from './InterestStep3';
 import InterestStep4 from './InterestStep4';
 import KeywordStep1 from './KeywordStep1';
 import { Button } from '@/components/ui/button';
+import { usePathname, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function UserPreferenceForm() {
-  const [step, setStep] = useState(1);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const stepParam = parseInt(searchParams.get('step') || '1');
+  const [step, setStep] = useState(stepParam);
+
+  useEffect(() => {
+    const stepFromQuery = searchParams.get('step');
+
+    if (!stepFromQuery) {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('step', '1');
+      router.replace(`${pathname}?${newParams.toString()}`);
+    }
+  }, []);
 
   const goNextPage = () => {
-    if (step < 4) setStep((prev) => prev + 1);
+    if (step < 4) {
+      const nextStep = step + 1;
+
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('step', String(nextStep));
+      router.push(`${pathname}?${newParams.toString()}`);
+      setStep(nextStep);
+    }
   };
 
   useEffect(() => {

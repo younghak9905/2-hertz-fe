@@ -31,7 +31,7 @@ export default function UserInformationForm({ providerId }: UserInformationFormP
       email: '',
       nickname: '',
       ageGroup: 'AGE_20S',
-      gender: 'MALE',
+      gender: undefined,
       oneLineIntroduction: '',
       isTest: true,
     },

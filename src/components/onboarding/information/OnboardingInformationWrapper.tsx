@@ -22,11 +22,22 @@ export default function OnboardingInformationWrapper() {
   useEffect(() => {
     if (!code || !state) return;
 
+    // 새로고침 또는 뒤로 가기로 돌아온 경우, providerId가 세션스토리지에 저장되어 있다면
+    // 추가 API 요청 없이 바로 신규 유저로 간주하여 다음 단계로 이동
+    const saved = sessionStorage.getItem('providerId');
+    if (saved) {
+      setProviderId(saved);
+      setIsNewUser(true);
+      setLoading(false);
+      return;
+    }
+
     const handleLogin = async () => {
       try {
         const response = await postKakaoLogin({ code, state });
 
         if (response.code === 'USER_NOT_REGISTERED') {
+          sessionStorage.setItem('providerId', response.data.providerId);
           setProviderId(response.data.providerId);
           setIsNewUser(true);
         } else if (response.code === 'USER_ALREADY_REGISTERED') {
