@@ -37,7 +37,7 @@ export default function EmailInputSection({ onVerify, isVerified }: EmailInputSe
     }
 
     const domain = email.split('@')[1];
-    const blockedDomains = ['gmail.com', 'naver.com', 'daum.net'];
+    const blockedDomains = ['gmail.com', 'naver.com', 'kakao.com'];
 
     if (blockedDomains.includes(domain)) {
       setError('email', {
