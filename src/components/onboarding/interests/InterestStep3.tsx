@@ -55,6 +55,7 @@ export default function InterestStep3() {
         multi
         maxSelect={10}
       />
+      <HorizonBar />
 
       <EnumSelectGrid
         title="반려동물을 키우고 계신가요?"
