@@ -1,6 +1,12 @@
-import UserPreferenceForm from '@/components/onboarding/interests/UserPreferenceForm';
-import Header from '@/components/layout/Header';
+'use client';
 
+import Header from '@/components/layout/Header';
+import dynamic from 'next/dynamic';
+
+const UserPreferenceForm = dynamic(
+  () => import('@/components/onboarding/interests/UserPreferenceForm'),
+  { ssr: false },
+);
 export default function OnboardingInterestsPage() {
   return (
     <>
