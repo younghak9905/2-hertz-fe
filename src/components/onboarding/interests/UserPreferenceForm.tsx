@@ -21,7 +21,7 @@ type PreferenceFormData = {
   };
   interests: {
     personality: string[];
-    prefferedPeople: string[];
+    preferredPeople: string[];
     currentInterests: string[];
     favoriteFoods: string[];
     likedSports: string[];
@@ -49,7 +49,7 @@ export default function UserPreferenceForm() {
       },
       interests: {
         personality: [],
-        prefferedPeople: [],
+        preferredPeople: [],
         currentInterests: [],
         favoriteFoods: [],
         likedSports: [],

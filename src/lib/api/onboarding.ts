@@ -58,7 +58,7 @@ export interface RegisterInterestRequst {
   };
   interests: {
     personality: string[];
-    prefferedPeople: string[];
+    preferredPeople: string[];
     currentInterests: string[];
     favoriteFoods: string[];
     likedSports: string[];

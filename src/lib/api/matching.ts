@@ -11,7 +11,7 @@ export interface TuningKeywords {
 
 export interface TuningSameInterests {
   personality: string[];
-  prefferedPeople: string[];
+  preferredPeople: string[];
   currentInterests: string[];
   favoriteFoods: string[];
   likedSports: string[];

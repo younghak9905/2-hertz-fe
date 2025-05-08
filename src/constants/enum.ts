@@ -100,7 +100,7 @@ export const Personality = {
   EMPATHETIC: '정이 많은',
 } as const;
 
-export const PrefferedPeople = {
+export const PreferredPeople = {
   CUTE: '아담한',
   RELIABLE: '듬직한',
   SMILES_OFTEN: '잘 웃는',

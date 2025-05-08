@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
-import { Personality, PrefferedPeople } from '@/constants/enum';
+import { Personality, PreferredPeople } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
 import { useFormContext } from 'react-hook-form';
 
@@ -9,7 +9,7 @@ export default function InterestStep2() {
   const { setValue, watch } = useFormContext();
 
   const selectedPersonality = watch('interests.personality');
-  const selectedPrefferedPeople = watch('interests.prefferedPeople');
+  const selectedPreferredPeople = watch('interests.preferredPeople');
 
   return (
     <>
@@ -27,9 +27,9 @@ export default function InterestStep2() {
       <EnumSelectGrid
         title="어떤 성향의 상대를 원하시나요?"
         description="* 중복 선택 가능"
-        options={PrefferedPeople}
-        selected={selectedPrefferedPeople}
-        onSelect={(value) => setValue('interests.prefferedPeople', value)}
+        options={PreferredPeople}
+        selected={selectedPreferredPeople}
+        onSelect={(value) => setValue('interests.preferredPeople', value)}
         multi
         maxSelect={10}
       />

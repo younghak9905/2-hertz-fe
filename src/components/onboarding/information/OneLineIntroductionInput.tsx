@@ -26,7 +26,7 @@ export default function OneLineIntroductionInput() {
         {...register('oneLineIntroduction', { required: true })}
       />
       {errors.oneLineIntroduction && (
-        <p className="text-sm text-red-500">한 줄 소개를 입력해주세요.</p>
+        <p className="text-xs font-medium text-[var(--pink)]">* 한 줄 소개를 입력해주세요.</p>
       )}
     </main>
   );
