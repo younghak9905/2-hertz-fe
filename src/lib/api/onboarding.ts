@@ -1,6 +1,7 @@
+import axiosInstance from '@lib/axios';
+import { CurrentInterests } from './../../constants/enum';
 // import { OneLineIntroductionInput } from '@components/onboarding/information/OneLineIntroductionInput';
 // import { AgeGroup } from './../../constants/enum';
-import axios from '@lib/axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -13,7 +14,7 @@ interface NicknameResponse {
 }
 
 export const getRandomNickname = async (): Promise<string> => {
-  const response = await axios.get<NicknameResponse>(`${BASE_URL}/v1/nickname`);
+  const response = await axiosInstance.get<NicknameResponse>(`${BASE_URL}/v1/nickname`);
   if (response.data.code === 'NICKNAME_CREATED') {
     return response.data.data.nickname;
   }
@@ -29,7 +30,7 @@ export interface RegisterUserRequest {
   ageGroup: 'AGE_20S' | 'AGE_30S' | 'AGE_40S' | 'AGE_50S' | 'AGE_60_PLUS';
   gender: 'MALE' | 'FEMALE';
   oneLineIntroduction: string;
-  isTest: true;
+  isTest: boolean;
 }
 
 interface RegisterUserResponse {
@@ -44,6 +45,38 @@ interface RegisterUserResponse {
 export const postRegisterUserInfo = async (
   payload: RegisterUserRequest,
 ): Promise<RegisterUserResponse> => {
-  const response = await axios.post(`${BASE_URL}/v1/users`, payload);
+  const response = await axiosInstance.post(`${BASE_URL}/v1/users`, payload);
+  return response.data;
+};
+
+export interface RegisterInterestRequst {
+  keywords: {
+    mbti: string;
+    religion: string;
+    smoking: string;
+    drinking: string;
+  };
+  interests: {
+    personality: string[];
+    prefferedPeople: string[];
+    currentInterests: string[];
+    favoriteFoods: string[];
+    likedSports: string[];
+    pets: string[];
+    selfDevelopment: string[];
+    hobbies: string[];
+  };
+}
+
+interface RegisterInterestResponse {
+  code: string;
+  message: string;
+  data: null;
+}
+
+export const postRegisterInterest = async (
+  payload: RegisterInterestRequst,
+): Promise<RegisterInterestResponse> => {
+  const response = await axiosInstance.post(`${BASE_URL}/v1/users/interests`, payload);
   return response.data;
 };

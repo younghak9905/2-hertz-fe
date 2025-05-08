@@ -3,10 +3,13 @@ import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { SelfDevelopment, Hobbies } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
+import { useFormContext } from 'react-hook-form';
 
 export default function InterestStep4() {
-  const [selectedSelfDevelopment, setSelectedSelfDevelopment] = useState<string[]>([]);
-  const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
+  const { setValue, watch } = useFormContext();
+
+  const selectedSelfDevelopment = watch('interests.selfDevelopment');
+  const selectedHobbies = watch('interests.hobbies');
 
   return (
     <>
@@ -15,7 +18,7 @@ export default function InterestStep4() {
         description="* 중복 선택 가능"
         options={SelfDevelopment}
         selected={selectedSelfDevelopment}
-        onSelect={setSelectedSelfDevelopment}
+        onSelect={(value) => setValue('interests.selfDevelopment', value)}
         multi
         maxSelect={10}
       />
@@ -26,7 +29,7 @@ export default function InterestStep4() {
         description="* 중복 선택 가능"
         options={Hobbies}
         selected={selectedHobbies}
-        onSelect={setSelectedHobbies}
+        onSelect={(value) => setValue('interests.hobbies', value)}
         multi
         maxSelect={10}
       />

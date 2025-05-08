@@ -3,10 +3,13 @@ import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { Personality, PrefferedPeople } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
+import { useFormContext } from 'react-hook-form';
 
 export default function InterestStep2() {
-  const [selectedPersonality, setSelectedPersonality] = useState<string[]>([]);
-  const [selectedPrefferedPeople, setSelectedPrefferedPeople] = useState<string[]>([]);
+  const { setValue, watch } = useFormContext();
+
+  const selectedPersonality = watch('interests.personality');
+  const selectedPrefferedPeople = watch('interests.prefferedPeople');
 
   return (
     <>
@@ -15,7 +18,7 @@ export default function InterestStep2() {
         description="* 중복 선택 가능"
         options={Personality}
         selected={selectedPersonality}
-        onSelect={setSelectedPersonality}
+        onSelect={(value) => setValue('interests.personality', value)}
         multi
         maxSelect={10}
       />
@@ -26,7 +29,7 @@ export default function InterestStep2() {
         description="* 중복 선택 가능"
         options={PrefferedPeople}
         selected={selectedPrefferedPeople}
-        onSelect={setSelectedPrefferedPeople}
+        onSelect={(value) => setValue('interests.prefferedPeople', value)}
         multi
         maxSelect={10}
       />

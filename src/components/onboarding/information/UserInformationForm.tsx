@@ -33,7 +33,7 @@ export default function UserInformationForm({ providerId }: UserInformationFormP
       ageGroup: 'AGE_20S',
       gender: undefined,
       oneLineIntroduction: '',
-      isTest: true,
+      isTest: false,
     },
   });
 

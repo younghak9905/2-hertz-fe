@@ -1,15 +1,15 @@
-'use client';
-
-import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { MBTI, Religion, Drinking, Smoking } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
+import { useFormContext } from 'react-hook-form';
 
 export default function KeywordStep1() {
-  const [selectedMBTI, setSelectedMBTI] = useState<string>('');
-  const [selectedReligion, setSelectedReligion] = useState<string>('');
-  const [selectedDrinking, setSelectedDrinking] = useState<string>('');
-  const [selectedSmoking, setSelectedSmoking] = useState<string>('');
+  const { setValue, watch } = useFormContext();
+
+  const selectedMBTI = watch('keywords.mbti');
+  const selectedReligion = watch('keywords.religion');
+  const selectedDrinking = watch('keywords.drinking');
+  const selectedSmoking = watch('keywords.smoking');
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={MBTI}
         selected={selectedMBTI}
-        onSelect={setSelectedMBTI}
+        onSelect={(value) => setValue('keywords.mbti', value)}
       />
       <HorizonBar />
 
@@ -27,7 +27,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Religion}
         selected={selectedReligion}
-        onSelect={setSelectedReligion}
+        onSelect={(value) => setValue('keywords.religion', value)}
       />
       <HorizonBar />
 
@@ -36,7 +36,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Drinking}
         selected={selectedDrinking}
-        onSelect={setSelectedDrinking}
+        onSelect={(value) => setValue('keywords.drinking', value)}
       />
       <HorizonBar />
 
@@ -45,7 +45,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Smoking}
         selected={selectedSmoking}
-        onSelect={setSelectedSmoking}
+        onSelect={(value) => setValue('keywords.smoking', value)}
       />
     </>
   );
