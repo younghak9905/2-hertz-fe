@@ -1,40 +1,124 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import InterestStep2 from './InterestStep2';
 import InterestStep3 from './InterestStep3';
 import InterestStep4 from './InterestStep4';
 import KeywordStep1 from './KeywordStep1';
 import { Button } from '@/components/ui/button';
+import { usePathname, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { postRegisterInterest } from '@/lib/api/onboarding';
+import toast from 'react-hot-toast';
+
+type PreferenceFormData = {
+  keywords: {
+    mbti: string;
+    religion: string;
+    smoking: string;
+    drinking: string;
+  };
+  interests: {
+    personality: string[];
+    preferredPeople: string[];
+    currentInterests: string[];
+    favoriteFoods: string[];
+    likedSports: string[];
+    pets: string[];
+    selfDevelopment: string[];
+    hobbies: string[];
+  };
+};
 
 export default function UserPreferenceForm() {
-  const [step, setStep] = useState(1);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const stepParam = parseInt(searchParams.get('step') || '1');
+  const [step, setStep] = useState(stepParam);
+
+  const methods = useForm<PreferenceFormData>({
+    defaultValues: {
+      keywords: {
+        mbti: '',
+        religion: '',
+        smoking: '',
+        drinking: '',
+      },
+      interests: {
+        personality: [],
+        preferredPeople: [],
+        currentInterests: [],
+        favoriteFoods: [],
+        likedSports: [],
+        pets: [],
+        selfDevelopment: [],
+        hobbies: [],
+      },
+    },
+  });
+
+  useEffect(() => {
+    const stepFromQuery = searchParams.get('step');
+
+    if (!stepFromQuery) {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('step', '1');
+      router.replace(`${pathname}?${newParams.toString()}`);
+    }
+  }, []);
 
   const goNextPage = () => {
-    if (step < 4) setStep((prev) => prev + 1);
+    if (step < 4) {
+      const nextStep = step + 1;
+
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('step', String(nextStep));
+      router.push(`${pathname}?${newParams.toString()}`);
+      setStep(nextStep);
+    }
+  };
+
+  const onSubmit = async (data: PreferenceFormData) => {
+    try {
+      await postRegisterInterest(data);
+      toast.success('저장이 완료되었습니다.');
+      router.push('/home');
+    } catch (error) {
+      console.error('제출 오류: ', error);
+      toast.error('저장 중 오류가 발생했습니다.');
+    }
   };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [step]);
 
   return (
-    <main className="space-y-4 px-2">
-      <div>
-        {step === 1 && <KeywordStep1 />}
-        {step === 2 && <InterestStep2 />}
-        {step === 3 && <InterestStep3 />}
-        {step === 4 && <InterestStep4 />}
+    <FormProvider {...methods}>
+      <main
+        ref={scrollRef}
+        className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-y-auto px-2 pt-14"
+      >
+        <div className="flex-grow space-y-4">
+          {step === 1 && <KeywordStep1 />}
+          {step === 2 && <InterestStep2 />}
+          {step === 3 && <InterestStep3 />}
+          {step === 4 && <InterestStep4 />}
+        </div>
+
         <div className="mt-4 flex w-full justify-center">
           <Button
-            onClick={goNextPage}
-            type="submit"
+            onClick={step === 4 ? methods.handleSubmit(onSubmit) : goNextPage}
+            type="button"
             className="mb-4 w-full max-w-lg rounded-[8] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
           >
             <p>{step === 4 ? '저장하기' : '다음으로'}</p>
           </Button>
         </div>
-      </div>
-    </main>
+      </main>
+    </FormProvider>
   );
 }

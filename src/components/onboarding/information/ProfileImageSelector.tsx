@@ -1,13 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
-
-interface ProfileImageSelectorProps {
-  selectedUrl: string;
-  onSelect: (url: string) => void;
-}
 
 const PROFILE_IMAGES = [
   '/images/cat-profile.png',
@@ -18,7 +14,10 @@ const PROFILE_IMAGES = [
   '/images/penguin-profile.png',
 ];
 
-export default function ProfileImageSelector({ selectedUrl, onSelect }: ProfileImageSelectorProps) {
+export default function ProfileImageSelector() {
+  const { setValue, watch } = useFormContext();
+  const selectedUrl = watch('profileImage');
+
   const [errorFallback, setErrorFallback] = useState<Record<string, boolean>>({});
 
   const handleError = (url: string) => {
@@ -38,7 +37,7 @@ export default function ProfileImageSelector({ selectedUrl, onSelect }: ProfileI
             <button
               type="button"
               key={url}
-              onClick={() => onSelect(url)}
+              onClick={() => setValue('profileImage', url)}
               className={`relative aspect-square overflow-hidden rounded-full border-1 transition-all duration-200 ${
                 isSelected
                   ? 'ring-0.3 border-[var(--gray-200)] shadow-md ring-[var(--gray-100)]'

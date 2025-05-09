@@ -16,13 +16,22 @@ export default function ReceiverMessage({
   contents,
   sentAt,
 }: ReceiverMessageProps) {
+  const getSafeImageSrc = (src: string) => {
+    if (!src || src.trim() === '') return '/images/default-profile.png';
+
+    if (src.startsWith('http') || src.startsWith('/')) return src;
+
+    const cleaned = src.replace(/^(\.\/|\.\.\/)+/, '');
+
+    return `/${cleaned}`;
+  };
   return (
     <div className="flex items-start justify-start gap-1.5">
       <div className="mr-2 flex flex-col items-center">
         <div className="relative h-10 w-10 rounded-full bg-gradient-to-tr from-[#7BA1FF] via-[#7BA1FF] to-transparent p-[2px]">
           <div className="h-full w-full rounded-full bg-white">
             <Image
-              src={profileImage || '/images/default-profile.png'}
+              src={getSafeImageSrc(profileImage) || '/images/default-profile.png'}
               width={36}
               height={36}
               alt="상대 프로필"
