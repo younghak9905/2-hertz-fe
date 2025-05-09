@@ -7,24 +7,33 @@ import SignalInputBox from '@/components/matching/individual/SignalInputBox';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTuningUser } from '@/lib/api/matching';
 import Loading from './loading';
+import { useTuningStore } from '@/stores/matching/useTuningStore';
+import { useEffect } from 'react';
 
 export default function IndividualMatchingPage() {
   const queryClient = useQueryClient();
+  const setReceiverUserId = useTuningStore((state) => state.setReceiverUserId);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['tuningUser'],
     queryFn: getTuningUser,
   });
+
+  const matchedUser = data?.data;
+
+  useEffect(() => {
+    if (matchedUser?.userId) {
+      setReceiverUserId(matchedUser.userId);
+    }
+  }, [matchedUser?.userId, setReceiverUserId]);
 
   const handleRefresh = async () => {
     await queryClient.invalidateQueries({ queryKey: ['tuningUser'] });
   };
 
-  if (isLoading || !data) {
+  if (isLoading || !matchedUser) {
     return <Loading />;
   }
-
-  const matchedUser = data.data;
 
   return (
     <>
