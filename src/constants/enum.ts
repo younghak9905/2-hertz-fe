@@ -22,17 +22,17 @@ export const Religion = {
 
 export const Smoking = {
   NO_SMOKING: '비흡연',
-  SOMETIMES: '가끔',
-  EVERYDAY: '매일',
+  SOMETIMES: '가끔 흡연',
+  EVERYDAY: '매일 흡연',
   E_CIGARETTE: '전자담배',
   TRYING_TO_QUIT: '금연중',
 } as const;
 
 export const Drinking = {
   NEVER: '전혀 안 마심',
-  ONLY_IF_NEEDED: '필요할 때만',
-  SOMETIMES: '가끔',
-  OFTEN: '자주',
+  ONLY_IF_NEEDED: '필요할 때만 음주',
+  SOMETIMES: '가끔 음주',
+  OFTEN: '자주 음주',
   TRYING_TO_QUIT: '금주중',
 } as const;
 
@@ -53,7 +53,7 @@ export const MBTI = {
   ESFJ: 'ESFJ',
   ENFJ: 'ENFJ',
   ENTJ: 'ENTJ',
-  UNKWON: '모름',
+  UNKWON: 'MBTI 모름',
 } as const;
 
 export const Personality = {
@@ -172,7 +172,7 @@ export const CurrentInterests = {
 
 export const FavoriteFoods = {
   TTEOKBOKKI: '떡볶이',
-  MEXICAN: '멕시코음식',
+  MEXICAN: '멕시코 음식',
   CHINESE: '중식',
   JAPANESE: '일식',
   KOREAN: '한식',
@@ -180,17 +180,17 @@ export const FavoriteFoods = {
   MEAT_LOVER: '육식',
   FRUIT: '과일',
   WESTERN: '양식',
-  STREET_FOOD: '길거리음식',
+  STREET_FOOD: '스트릿 푸드',
   BAKERY: '베이커리',
   HAMBURGER: '햄버거',
   PIZZA: '피자',
   BRUNCH: '브런치',
   ROOT_VEGETABLES: '구황작물',
   CHICKEN: '치킨',
-  VIETNAMESE: '베트남음식',
+  VIETNAMESE: '베트남 음식',
   SEAFOOD: '해산물',
-  THAI: '태국음식',
-  SPICY_FOOD: '매운음식',
+  THAI: '태국 음식',
+  SPICY_FOOD: '매운 음식',
 } as const;
 
 export const LikedSports = {
@@ -201,7 +201,7 @@ export const LikedSports = {
   GOLF: '골프',
   GYM: '헬스',
   PILATES: '필라테스',
-  HOME_TRAINING: '홈트레이닝',
+  HOME_TRAINING: '홈 트레이닝',
   CLIMBING: '클라이밍',
   CYCLING: '자전거',
   BOWLING: '볼링',
@@ -236,7 +236,7 @@ export const Pets = {
   LIKE_BUT_NOT_HAVE: '키우진 않지만 좋아함',
   HAMSTER: '햄스터',
   RABBIT: '토끼',
-  NONE: '없음',
+  NONE: '반려동물 없음',
   WANT_TO_HAVE: '키우고 싶음',
 } as const;
 
