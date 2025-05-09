@@ -14,29 +14,6 @@ interface ChannelRoom {
   relationType: 'SIGNAL' | 'MATCHING';
 }
 
-const dummyData: ChannelRoom[] = [
-  {
-    channelRoomId: 1,
-    partnerProfileImage: '/images/cat-profile.png',
-    partnerNickname: '행복한 개구리',
-    lastMessage:
-      '안녕하세요! 저는 카카오테크 부트캠프 풀스택 2기 daisy입니다. 프론트엔드 개발자이자 2조 대표자입니다 ~!',
-    lastMessageTime: '2025-04-17T14:13:00',
-    isRead: true,
-    relationType: 'SIGNAL',
-  },
-  {
-    channelRoomId: 2,
-    partnerProfileImage: '/images/elephant-profile.png',
-    partnerNickname: '긍정의 토끼',
-    lastMessage:
-      '안녕하세요! 저는 카카오테크 부트캠프 풀스택 2기 daisy입니다. 프론트엔드 개발자이자 2조 대표자입니다 ~!',
-    lastMessageTime: '2025-04-08T09:00:00',
-    isRead: false,
-    relationType: 'MATCHING',
-  },
-];
-
 export default function ChannelsIndividualPage() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['channelRooms', 0],

@@ -5,6 +5,7 @@ import { ArrowUp } from 'lucide-react';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
 import { postSignal } from '@/lib/api/matching';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 interface SignalInputBoxProps {
   onSend: (message: string) => void;
@@ -22,17 +23,18 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
     try {
       const response = await postSignal({ receiverUserId, message });
       toast.success('시그널을 성공적으로 보냈습니다!');
-      console.log('channel room id : ', response.data.channelRoomId);
       setValue('');
-    } catch (error: any) {
-      const code = error?.response?.data?.code;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const code = error.response?.data?.code;
 
-      if (code === 'USER_DEACTIVATED') {
-        toast.error('상대방이 탈퇴한 사용자입니다.');
-      } else if (code === 'ALREADY_IN_CONVERSATION') {
-        toast.error('이미 대화 중인 상대방입니다.');
-      } else {
-        toast.error('시그널 전송에 실패했습니다. 다시 시도해주세요.');
+        if (code === 'USER_DEACTIVATED') {
+          toast.error('상대방이 탈퇴한 사용자입니다.');
+        } else if (code === 'ALREADY_IN_CONVERSATION') {
+          toast.error('이미 대화 중인 상대방입니다.');
+        } else {
+          toast.error('시그널 전송에 실패했습니다. 다시 시도해주세요.');
+        }
       }
     }
   };
