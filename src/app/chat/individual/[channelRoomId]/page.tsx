@@ -4,13 +4,39 @@ import ReceiverMessage from '@/components/chat/common/ReceiverMessage';
 import SenderMessage from '@/components/chat/common/SenderMessage';
 import ChatHeader from '@/components/layout/ChatHeader';
 import SignalInputBox from '@/components/matching/individual/SignalInputBox';
+import { getChannelRoomDetail } from '@/lib/api/chat';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 
 export default function ChatsIndividualPage() {
+  const { channelRoomId } = useParams();
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['channelRoom', channelRoomId],
+    queryFn: () => getChannelRoomDetail(Number(channelRoomId)),
+    enabled: !!channelRoomId,
+  });
+
+  const partner = data?.data;
+  const messages = partner?.messages.list || [];
+
+  const handleSend = async (message: string) => {
+    try {
+      await postMessage(Number(channelRoomId), message);
+      await queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (isLoading) return <p>로딩 중...</p>;
+
   return (
     <>
       <main className="relative flex h-[calc(100vh-3.5rem)] w-full flex-col overflow-x-hidden px-6 pb-18">
         <ChatHeader
-          title="카카오테크 부트캠프에서 함께한 동료들"
+          title={partner?.partnerNickname ?? ''}
           onLeave={() => console.log('나가기')}
           onToggleDetail={() => console.log('상세 보기 토글')}
         />
@@ -18,31 +44,27 @@ export default function ChatsIndividualPage() {
           2025년 5월 5일 월요일
         </div>
         <div className="flex flex-col gap-6">
-          <SenderMessage
-            contents="안녕하세요! 만나서 반갑습니다 :) 지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. 그 울림을 느껴보세요.지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. "
-            sentAt="2023-05-05T12:00:00"
-          />
-          <ReceiverMessage
-            nickname="행복한 고구마"
-            profileImage="/images/dog-profile.png"
-            contents="안녕하세요! 만나서 반갑습니다 :) 지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. 그 울림을 느껴보세요.지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. "
-            sentAt="2023-05-05T12:00:00"
-          />
-
-          <SenderMessage
-            contents="안녕하세요! 만나서 반갑습니다 :) 지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. 그 울림을 느껴보세요.지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. "
-            sentAt="2023-05-05T12:00:00"
-          />
-          <ReceiverMessage
-            nickname="행복한 고구마"
-            profileImage="/images/dog-profile.png"
-            contents="안녕하세요! 만나서 반갑습니다 :) 지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. 그 울림을 느껴보세요.지금 이 순간에도 누군가는 당신과 주파수를 맞추려 시그널을 보내고 있어요. "
-            sentAt="2023-05-05T12:00:00"
-          />
+          {messages.map((msg) =>
+            msg.messageSenderId === partner?.partnerId ? (
+              <ReceiverMessage
+                key={msg.messageId}
+                nickname={partner?.partnerNickname ?? ''}
+                profileImage={partner?.partnerProfileImage ?? '/images/default-profile.png'}
+                contents={msg.messageContents}
+                sentAt={msg.messageSendAt}
+              />
+            ) : (
+              <SenderMessage
+                key={msg.messageId}
+                contents={msg.messageContents}
+                sentAt={msg.messageSendAt}
+              />
+            ),
+          )}
         </div>
       </main>
       <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
-        <SignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
+        <SignalInputBox onSend={handleSend} />
       </div>
     </>
   );
