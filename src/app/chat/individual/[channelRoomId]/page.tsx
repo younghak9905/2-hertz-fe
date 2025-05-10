@@ -3,10 +3,11 @@
 import ReceiverMessage from '@/components/chat/common/ReceiverMessage';
 import SenderMessage from '@/components/chat/common/SenderMessage';
 import ChatHeader from '@/components/layout/ChatHeader';
-import SignalInputBox from '@/components/matching/individual/SignalInputBox';
-import { getChannelRoomDetail } from '@/lib/api/chat';
+import SignalInputBox from '@/components/chat/common/ChatSignalInputBox';
+import { getChannelRoomDetail, postChannelMessage } from '@/lib/api/chat';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
@@ -23,10 +24,10 @@ export default function ChatsIndividualPage() {
 
   const handleSend = async (message: string) => {
     try {
-      await postMessage(Number(channelRoomId), message);
+      await postChannelMessage(Number(channelRoomId), { message });
       await queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
     } catch (err) {
-      console.log(err);
+      toast.error('메세지 전송에 실패했습니다.');
     }
   };
 

@@ -2,38 +2,48 @@
 
 import { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
 import { postSignal } from '@/lib/api/matching';
-import toast from 'react-hot-toast';
 import axios from 'axios';
 
-interface SignalInputBoxProps {
-  onSend: (message: string) => void;
+interface MatchingSignalInputBoxProps {
+  onSend?: (message: string) => void;
+  placeholder?: string;
 }
 
-export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
+export default function MatchingSignalInputBox({
+  onSend,
+  placeholder = '상대방에게 첫 시그널 보내기',
+}: MatchingSignalInputBoxProps) {
   const [value, setValue] = useState('');
   const receiverUserId = useTuningStore((state) => state.receiverUserId);
+  const router = useRouter();
 
   const handleSend = async () => {
     const message = value.trim();
     if (!message || !receiverUserId) return;
-    onSend(message);
 
     try {
-      const response = await postSignal({ receiverUserId, message });
+      const res = await postSignal({ receiverUserId, message });
       toast.success('시그널을 성공적으로 보냈습니다!');
       setValue('');
-    } catch (error: unknown) {
+
+      if (res?.data?.channelRoomId) {
+        router.push(`/chat/individual/${res.data.channelRoomId}?page=0&size=20`);
+      }
+
+      onSend?.(message);
+    } catch (error) {
       if (axios.isAxiosError(error)) {
         const code = error.response?.data?.code;
-
         if (code === 'USER_DEACTIVATED') {
           toast.error('상대방이 탈퇴한 사용자입니다.');
         } else if (code === 'ALREADY_IN_CONVERSATION') {
           toast.error('이미 대화 중인 상대방입니다.');
         } else {
-          toast.error('시그널 전송에 실패했습니다. 다시 시도해주세요.');
+          toast.error('시그널 전송에 실패했습니다.');
         }
       }
     }
@@ -53,7 +63,7 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="상대방에게 첫 시그널 보내기"
+        placeholder={placeholder}
         className="ml-2 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-400"
       />
       <button

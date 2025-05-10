@@ -3,7 +3,7 @@
 import KeywordTagGroup from '@/components/matching/individual/KeywordTagGroup';
 import Header from '@/components/layout/Header';
 import TuningProfileCard from '@components/matching/individual/TuningProfileCard';
-import SignalInputBox from '@/components/matching/individual/SignalInputBox';
+import MatchingSignalInputBox from '@/components/matching/MatchingSignalInputBox';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTuningUser } from '@/lib/api/matching';
 import Loading from './loading';
@@ -55,7 +55,7 @@ export default function IndividualMatchingPage() {
             />
           </div>
           <div className="pt-8">
-            <SignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
+            <MatchingSignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
           </div>
         </div>
       </main>

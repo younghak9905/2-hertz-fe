@@ -1,4 +1,5 @@
 import axiosInstance from '@/lib/axios';
+import { channel } from 'diagnostics_channel';
 
 export interface ChannelRoom {
   channelRoomId: number;
@@ -68,5 +69,23 @@ export const getChannelRoomDetail = async (
   const response = await axiosInstance.get(
     `/v1/channel-rooms/${channelRoomId}?page=${page}&size=${size}`,
   );
+  return response.data;
+};
+
+export interface PostChannelMessageRequest {
+  message: string;
+}
+
+export interface PostChannelMessageResponse {
+  code: string;
+  message: string;
+  data: null;
+}
+
+export const postChannelMessage = async (
+  channelRoomId: number,
+  payload: PostChannelMessageRequest,
+): Promise<PostChannelMessageResponse> => {
+  const response = await axiosInstance.post(`/v1/channel-rooms/${channelRoomId}/messages`, payload);
   return response.data;
 };
