@@ -1,9 +1,21 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { RegisterUserRequest } from '@/lib/api/onboarding';
+import { on } from 'events';
 import { useFormContext } from 'react-hook-form';
 
 export default function GenderSelectGroup() {
-  const { watch, setValue } = useFormContext();
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<RegisterUserRequest>();
   const gender = watch('gender');
+
+  const handleChange = (value: string | undefined) => {
+    if (value === 'MALE' || value === 'FEMALE') {
+      setValue('gender', value, { shouldValidate: true });
+    }
+  };
 
   return (
     <main className="space-y-4 px-2">
@@ -12,9 +24,7 @@ export default function GenderSelectGroup() {
         type="single"
         value={gender}
         className="w-full justify-between gap-4"
-        onValueChange={(value) => {
-          if (value) setValue('gender', value);
-        }}
+        onValueChange={handleChange}
       >
         <ToggleGroupItem
           value="MALE"
@@ -29,6 +39,10 @@ export default function GenderSelectGroup() {
           🙋🏻‍♀️ 여성
         </ToggleGroupItem>
       </ToggleGroup>
+
+      {errors.gender && (
+        <p className="mt-4 text-xs font-medium text-[var(--pink)]">* {errors.gender.message}</p>
+      )}
     </main>
   );
 }

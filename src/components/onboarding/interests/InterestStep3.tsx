@@ -19,7 +19,7 @@ export default function InterestStep3() {
         options={CurrentInterests}
         selected={selectedCurrentInterests}
         onSelect={(value) => {
-          setValue('interests.currentInterests', value);
+          setValue('interests.currentInterests', value, { shouldValidate: true });
         }}
         multi
         maxSelect={10}
@@ -32,7 +32,7 @@ export default function InterestStep3() {
         options={FavoriteFoods}
         selected={selectedFavoriteFoods}
         onSelect={(value) => {
-          setValue('interests.favoriteFoods', value);
+          setValue('interests.favoriteFoods', value, { shouldValidate: true });
         }}
         multi
         maxSelect={10}
@@ -45,7 +45,7 @@ export default function InterestStep3() {
         options={LikedSports}
         selected={selectedLikedSports}
         onSelect={(value) => {
-          setValue('interests.likedSports', value);
+          setValue('interests.likedSports', value, { shouldValidate: true });
         }}
         multi
         maxSelect={10}
@@ -58,7 +58,7 @@ export default function InterestStep3() {
         options={Pets}
         selected={selectedPets}
         onSelect={(value) => {
-          setValue('interests.pets', value);
+          setValue('interests.pets', value, { shouldValidate: true });
         }}
         multi
         maxSelect={10}

@@ -13,7 +13,6 @@ export default function OnboardingInformationWrapper() {
 
   const code = searchParams.get('code');
   const state = searchParams.get('state');
-  console.log('code', code, 'state', state);
 
   const [isNewUser, setIsNewUser] = useState(false);
   const [providerId, setProviderId] = useState<string | null>(null);

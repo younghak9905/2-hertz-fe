@@ -11,6 +11,8 @@ import { useSearchParams } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { postRegisterInterest } from '@/lib/api/onboarding';
 import toast from 'react-hot-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { preferenceSchema } from '@/lib/schema/onboardingValidation';
 
 type PreferenceFormData = {
   keywords: {
@@ -40,6 +42,8 @@ export default function UserPreferenceForm() {
   const [step, setStep] = useState(stepParam);
 
   const methods = useForm<PreferenceFormData>({
+    mode: 'onChange',
+    resolver: zodResolver(preferenceSchema),
     defaultValues: {
       keywords: {
         mbti: '',
@@ -71,14 +75,45 @@ export default function UserPreferenceForm() {
   }, []);
 
   const goNextPage = () => {
-    if (step < 4) {
-      const nextStep = step + 1;
+    const { keywords, interests } = methods.getValues();
 
-      const newParams = new URLSearchParams(searchParams.toString());
-      newParams.set('step', String(nextStep));
-      router.push(`${pathname}?${newParams.toString()}`);
-      setStep(nextStep);
+    if (step === 1) {
+      const { mbti, religion, smoking, drinking } = keywords;
+      if (!mbti || !religion || !smoking || !drinking) {
+        toast.error('모든 항목을 선택해주세요.');
+        return;
+      }
+    } else if (step === 2) {
+      const { personality, preferredPeople } = interests;
+      if (personality.length === 0 || preferredPeople.length === 0) {
+        toast.error('모든 항목을 선택해주세요.');
+        return;
+      }
+    } else if (step === 3) {
+      const { currentInterests, favoriteFoods, likedSports, pets } = interests;
+      if (
+        currentInterests.length === 0 ||
+        favoriteFoods.length === 0 ||
+        likedSports.length === 0 ||
+        pets.length === 0
+      ) {
+        toast.error('모든 항목을 선택해주세요.');
+        return;
+      }
+    } else if (step === 4) {
+      const { selfDevelopment, hobbies } = interests;
+      if (selfDevelopment.length === 0 || hobbies.length === 0) {
+        toast.error('모든 항목을 선택해주세요.');
+        return;
+      }
     }
+
+    const nextStep = step + 1;
+
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set('step', String(nextStep));
+    router.push(`${pathname}?${newParams.toString()}`);
+    setStep(nextStep);
   };
 
   const onSubmit = async (data: PreferenceFormData) => {
@@ -111,7 +146,19 @@ export default function UserPreferenceForm() {
 
         <div className="mt-4 flex w-full justify-center">
           <Button
-            onClick={step === 4 ? methods.handleSubmit(onSubmit) : goNextPage}
+            onClick={async () => {
+              if (step === 4) {
+                const isValid = await methods.trigger();
+                if (!isValid) {
+                  toast.error('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
+                const values = methods.getValues();
+                await onSubmit(values);
+              } else {
+                goNextPage();
+              }
+            }}
             type="button"
             className="mb-4 w-full max-w-lg rounded-[8] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
           >

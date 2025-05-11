@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { SelfDevelopment, Hobbies } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
@@ -18,7 +17,7 @@ export default function InterestStep4() {
         description="* 중복 선택 가능"
         options={SelfDevelopment}
         selected={selectedSelfDevelopment}
-        onSelect={(value) => setValue('interests.selfDevelopment', value)}
+        onSelect={(value) => setValue('interests.selfDevelopment', value, { shouldValidate: true })}
         multi
         maxSelect={10}
       />
@@ -29,7 +28,7 @@ export default function InterestStep4() {
         description="* 중복 선택 가능"
         options={Hobbies}
         selected={selectedHobbies}
-        onSelect={(value) => setValue('interests.hobbies', value)}
+        onSelect={(value) => setValue('interests.hobbies', value, { shouldValidate: true })}
         multi
         maxSelect={10}
       />
