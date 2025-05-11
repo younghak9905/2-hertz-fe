@@ -18,7 +18,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={MBTI}
         selected={selectedMBTI}
-        onSelect={(value) => setValue('keywords.mbti', value)}
+        onSelect={(value) => setValue('keywords.mbti', value, { shouldValidate: true })}
       />
       <HorizonBar />
 
@@ -27,7 +27,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Religion}
         selected={selectedReligion}
-        onSelect={(value) => setValue('keywords.religion', value)}
+        onSelect={(value) => setValue('keywords.religion', value, { shouldValidate: true })}
       />
       <HorizonBar />
 
@@ -36,7 +36,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Drinking}
         selected={selectedDrinking}
-        onSelect={(value) => setValue('keywords.drinking', value)}
+        onSelect={(value) => setValue('keywords.drinking', value, { shouldValidate: true })}
       />
       <HorizonBar />
 
@@ -45,7 +45,7 @@ export default function KeywordStep1() {
         description="* 단일 선택 가능"
         options={Smoking}
         selected={selectedSmoking}
-        onSelect={(value) => setValue('keywords.smoking', value)}
+        onSelect={(value) => setValue('keywords.smoking', value, { shouldValidate: true })}
       />
     </>
   );

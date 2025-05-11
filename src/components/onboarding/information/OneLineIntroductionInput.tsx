@@ -25,8 +25,10 @@ export default function OneLineIntroductionInput() {
         maxLength={100}
         {...register('oneLineIntroduction', { required: true })}
       />
-      {errors.oneLineIntroduction && (
-        <p className="text-xs font-medium text-[var(--pink)]">* 한 줄 소개를 입력해주세요.</p>
+      {typeof errors.oneLineIntroduction?.message === 'string' && (
+        <p className="text-xs font-medium text-[var(--pink)]">
+          * {errors.oneLineIntroduction.message}
+        </p>
       )}
     </main>
   );

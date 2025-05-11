@@ -1,8 +1,8 @@
 'use client';
 
-import Image from "next/image";
-import { getKakaoRedirect } from "@/lib/api/auth";
-import toast from "react-hot-toast";
+import Image from 'next/image';
+import { getKakaoRedirect } from '@/lib/api/auth';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const handleLogin = async () => {
@@ -10,13 +10,13 @@ export default function LoginPage() {
       await getKakaoRedirect();
     } catch (error) {
       console.error(error);
-      toast.error("카카오 로그인에 실패했습니다.");
+      toast.error('카카오 로그인에 실패했습니다.');
     }
   };
 
   return (
-    <main className="h-[calc(100vh-3.5rem)] flex flex-col justify-center items-center px-10">
-      <div className="flex flex-col gap-8 items-center">
+    <main className="flex h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-10">
+      <div className="flex flex-col items-center gap-8">
         <Image src="/icons/favicon.png" alt="favicon" width={100} height={100} />
         <Image src="/icons/logo-blue.png" alt="logo-blue" width={120} height={100} />
       </div>
@@ -27,14 +27,9 @@ export default function LoginPage() {
 
       <div
         onClick={handleLogin}
-        className="cursor-pointer hover:opacity-90 transition active:scale-98"
+        className="cursor-pointer transition hover:opacity-90 active:scale-98"
       >
-        <Image
-          src="/icons/kakao-login.png"
-          alt="kakao login"
-          width={300}
-          height={300}
-        />
+        <Image src="/icons/kakao-login.png" alt="kakao login" width={300} height={300} />
       </div>
     </main>
   );

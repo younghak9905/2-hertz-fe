@@ -9,7 +9,11 @@ import toast from 'react-hot-toast';
 import clsx from 'clsx';
 
 export default function RandomNicknameButton() {
-  const { setValue, watch } = useFormContext();
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext();
   const nickname = watch('nickname');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +22,7 @@ export default function RandomNicknameButton() {
     setIsLoading(true);
     try {
       const newNickname = await getRandomNickname();
-      setValue('nickname', newNickname);
+      setValue('nickname', newNickname, { shouldValidate: true });
     } catch (error) {
       toast.error('닉네임을 가져오지 못했습니다.');
     } finally {
@@ -50,6 +54,10 @@ export default function RandomNicknameButton() {
           />
         </button>
       </div>
+
+      {typeof errors.nickname?.message === 'string' && (
+        <p className="mt-2 text-xs font-medium text-[var(--pink)]">* {errors.nickname.message}</p>
+      )}
     </main>
   );
 }

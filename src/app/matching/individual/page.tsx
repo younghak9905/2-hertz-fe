@@ -3,12 +3,13 @@
 import KeywordTagGroup from '@/components/matching/individual/KeywordTagGroup';
 import Header from '@/components/layout/Header';
 import TuningProfileCard from '@components/matching/individual/TuningProfileCard';
-import SignalInputBox from '@/components/matching/individual/SignalInputBox';
+import MatchingSignalInputBox from '@/components/matching/MatchingSignalInputBox';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTuningUser } from '@/lib/api/matching';
 import Loading from './loading';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function IndividualMatchingPage() {
   const queryClient = useQueryClient();
@@ -22,16 +23,35 @@ export default function IndividualMatchingPage() {
   const matchedUser = data?.data;
 
   useEffect(() => {
-    if (matchedUser?.userId) {
-      setReceiverUserId(matchedUser.userId);
+    if (!data) return;
+
+    const code = data.code as string;
+
+    switch (code) {
+      case 'NO_TUNING_CANDIDATE':
+        toast.error('추천 가능한 상대가 없습니다.');
+        break;
+      case 'USER_INTERESTS_NOT_SELECTED':
+        toast.error('취향 선택을 완료해야 매칭이 가능합니다.');
+        break;
+      case 'AI_SERVER_ERROR':
+        toast.error('AI 서버 오류로 매칭을 불러올 수 없습니다.');
+        break;
+      case 'TUNING_SUCCESS':
+        if (matchedUser?.userId) {
+          setReceiverUserId(matchedUser.userId);
+        }
+        break;
+      default:
+        toast.error('알 수 없는 오류가 발생했습니다.');
     }
-  }, [matchedUser?.userId, setReceiverUserId]);
+  }, [data, matchedUser?.userId, setReceiverUserId]);
 
   const handleRefresh = async () => {
     await queryClient.invalidateQueries({ queryKey: ['tuningUser'] });
   };
 
-  if (isLoading || !matchedUser) {
+  if (isLoading || !matchedUser || !data) {
     return <Loading />;
   }
 
@@ -55,7 +75,7 @@ export default function IndividualMatchingPage() {
             />
           </div>
           <div className="pt-8">
-            <SignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
+            <MatchingSignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
           </div>
         </div>
       </main>

@@ -14,8 +14,9 @@ import OneLineIntroductionInput from '@components/onboarding/information/OneLine
 // import MatchingAgreementToggleGroup from '@components/onboarding/information/MatchingAgreementToggleGroup';
 import AgeGroupSelector from './AgeGroupSelector';
 import { postRegisterUserInfo } from '@/lib/api/onboarding';
-import type { RegisterUserRequest } from '@/lib/api/onboarding';
-
+import { registerUserSchema } from '@/lib/schema/onboardingValidation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 interface UserInformationFormProps {
   providerId: string;
 }
@@ -23,7 +24,10 @@ interface UserInformationFormProps {
 export default function UserInformationForm({ providerId }: UserInformationFormProps) {
   const router = useRouter();
 
-  const methods = useForm<RegisterUserRequest>({
+  type RegisterUserForm = z.infer<typeof registerUserSchema>;
+
+  const methods = useForm<RegisterUserForm>({
+    resolver: zodResolver(registerUserSchema),
     defaultValues: {
       providerId,
       provider: 'KAKAO',
