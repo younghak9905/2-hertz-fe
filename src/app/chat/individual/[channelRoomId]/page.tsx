@@ -52,6 +52,15 @@ export default function ChatsIndividualPage() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  // polling
+  useEffect(() => {
+    const interval = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [channelRoomId, queryClient]);
+
   const handleSend = async (message: string, onSuccess: () => void) => {
     try {
       const response = await postChannelMessage(Number(channelRoomId), { message });
