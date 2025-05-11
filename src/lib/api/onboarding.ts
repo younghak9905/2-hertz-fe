@@ -25,7 +25,7 @@ export interface RegisterUserRequest {
   providerId: string;
   provider: 'KAKAO';
   profileImage: string;
-  email: string;
+  email?: string;
   nickname: string;
   ageGroup: 'AGE_20S' | 'AGE_30S' | 'AGE_40S' | 'AGE_50S' | 'AGE_60_PLUS';
   gender: 'MALE' | 'FEMALE';

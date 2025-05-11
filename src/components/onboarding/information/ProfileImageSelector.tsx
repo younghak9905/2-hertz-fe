@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { RegisterUserRequest } from '@/lib/api/onboarding';
 
 const PROFILE_IMAGES = [
   '/images/cat-profile.png',
@@ -15,7 +16,11 @@ const PROFILE_IMAGES = [
 ];
 
 export default function ProfileImageSelector() {
-  const { setValue, watch } = useFormContext();
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext<RegisterUserRequest>();
   const selectedUrl = watch('profileImage');
 
   const [errorFallback, setErrorFallback] = useState<Record<string, boolean>>({});
@@ -37,7 +42,7 @@ export default function ProfileImageSelector() {
             <button
               type="button"
               key={url}
-              onClick={() => setValue('profileImage', url)}
+              onClick={() => setValue('profileImage', url, { shouldValidate: true })}
               className={`relative aspect-square overflow-hidden rounded-full border-1 transition-all duration-200 ${
                 isSelected
                   ? 'ring-0.3 border-[var(--gray-200)] shadow-md ring-[var(--gray-100)]'
@@ -65,6 +70,11 @@ export default function ProfileImageSelector() {
           );
         })}
       </div>
+      {errors.profileImage && (
+        <p className="mt-4 text-xs font-medium text-[var(--pink)]">
+          * {errors.profileImage.message}
+        </p>
+      )}
     </main>
   );
 }
