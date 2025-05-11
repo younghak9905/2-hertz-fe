@@ -4,23 +4,53 @@ import ReceiverMessage from '@/components/chat/common/ReceiverMessage';
 import SenderMessage from '@/components/chat/common/SenderMessage';
 import ChatHeader from '@/components/layout/ChatHeader';
 import ChatSignalInputBox from '@/components/chat/common/ChatSignalInputBox';
-import { getChannelRoomDetail, postChannelMessage } from '@/lib/api/chat';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  ChannelRoomDetailResponse,
+  getChannelRoomDetail,
+  postChannelMessage,
+} from '@/lib/api/chat';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
   const queryClient = useQueryClient();
+  const { ref, inView } = useInView();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['channelRoom', channelRoomId],
-    queryFn: () => getChannelRoomDetail(Number(channelRoomId)),
-    enabled: !!channelRoomId,
-  });
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<ChannelRoomDetailResponse>({
+      queryKey: ['channelRoom', channelRoomId],
+      queryFn: ({ pageParam = 0 }) =>
+        getChannelRoomDetail(Number(channelRoomId), pageParam as number, 20),
+      getNextPageParam: (lastPage) => {
+        if (!lastPage?.data?.pageable) return undefined;
+        return lastPage.data.pageable.isLast ? undefined : lastPage.data.pageable.pageNumber + 1;
+      },
+      enabled: !!channelRoomId,
+      initialPageParam: 0,
+    });
 
-  const partner = data?.data;
-  const messages = partner?.messages.list || [];
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [data?.pages]);
+
+  const partner = data?.pages?.[0]?.data;
+  const messages = data?.pages.flatMap((page) => page.data.messages.list) || [];
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   const handleSend = async (message: string, onSuccess: () => void) => {
     try {
@@ -70,6 +100,7 @@ export default function ChatsIndividualPage() {
               />
             ),
           )}
+          <div ref={bottomRef} />
         </div>
       </main>
       <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
