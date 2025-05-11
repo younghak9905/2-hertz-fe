@@ -24,15 +24,22 @@ export default function SignalInputBox({ onSend }: SignalInputBoxProps) {
       toast.success('시그널을 성공적으로 보냈습니다!');
       console.log('channel room id : ', response.data.channelRoomId);
       setValue('');
-    } catch (error: any) {
-      const code = error?.response?.data?.code;
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null && 'response' in error) {
+        const axiosError = error as {
+          response?: { data?: { code?: string } };
+        };
+        const code = axiosError.response?.data?.code;
 
-      if (code === 'USER_DEACTIVATED') {
-        toast.error('상대방이 탈퇴한 사용자입니다.');
-      } else if (code === 'ALREADY_IN_CONVERSATION') {
-        toast.error('이미 대화 중인 상대방입니다.');
+        if (code === 'USER_DEACTIVATED') {
+          toast.error('상대방이 탈퇴한 사용자입니다.');
+        } else if (code === 'ALREADY_IN_CONVERSATION') {
+          toast.error('이미 대화 중인 상대방입니다.');
+        } else {
+          toast.error('시그널 전송에 실패했습니다. 다시 시도해주세요.');
+        }
       } else {
-        toast.error('시그널 전송에 실패했습니다. 다시 시도해주세요.');
+        toast.error('알 수 없는 오류가 발생했습니다.');
       }
     }
   };
