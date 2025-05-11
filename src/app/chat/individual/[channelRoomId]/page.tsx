@@ -3,7 +3,7 @@
 import ReceiverMessage from '@/components/chat/common/ReceiverMessage';
 import SenderMessage from '@/components/chat/common/SenderMessage';
 import ChatHeader from '@/components/layout/ChatHeader';
-import SignalInputBox from '@/components/chat/common/ChatSignalInputBox';
+import ChatSignalInputBox from '@/components/chat/common/ChatSignalInputBox';
 import { getChannelRoomDetail, postChannelMessage } from '@/lib/api/chat';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -22,10 +22,18 @@ export default function ChatsIndividualPage() {
   const partner = data?.data;
   const messages = partner?.messages.list || [];
 
-  const handleSend = async (message: string) => {
+  const handleSend = async (message: string, onSuccess: () => void) => {
     try {
-      await postChannelMessage(Number(channelRoomId), { message });
-      await queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
+      const response = await postChannelMessage(Number(channelRoomId), { message });
+
+      if (response.code === 'MESSAGE_CREATED') {
+        await queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
+        onSuccess();
+      } else if (response.code === 'USER_DEACTIVATED') {
+        toast.error('상대방이 탈퇴한 사용자입니다.');
+      } else {
+        toast.error('알 수 없는 오류가 발생했습니다.');
+      }
     } catch (err) {
       toast.error('메세지 전송에 실패했습니다.');
     }
@@ -65,7 +73,7 @@ export default function ChatsIndividualPage() {
         </div>
       </main>
       <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
-        <SignalInputBox onSend={handleSend} />
+        <ChatSignalInputBox onSend={handleSend} />
       </div>
     </>
   );
