@@ -11,6 +11,8 @@ import { useSearchParams } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { postRegisterInterest } from '@/lib/api/onboarding';
 import toast from 'react-hot-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { preferenceSchema } from '@/lib/schema/onboardingValidation';
 
 type PreferenceFormData = {
   keywords: {
@@ -40,6 +42,8 @@ export default function UserPreferenceForm() {
   const [step, setStep] = useState(stepParam);
 
   const methods = useForm<PreferenceFormData>({
+    mode: 'onChange',
+    resolver: zodResolver(preferenceSchema),
     defaultValues: {
       keywords: {
         mbti: '',
@@ -142,7 +146,19 @@ export default function UserPreferenceForm() {
 
         <div className="mt-4 flex w-full justify-center">
           <Button
-            onClick={step === 4 ? methods.handleSubmit(onSubmit) : goNextPage}
+            onClick={async () => {
+              if (step === 4) {
+                const isValid = await methods.trigger();
+                if (!isValid) {
+                  toast.error('입력하지 않은 항목이 있습니다.');
+                  return;
+                }
+                const values = methods.getValues();
+                await onSubmit(values);
+              } else {
+                goNextPage();
+              }
+            }}
             type="button"
             className="mb-4 w-full max-w-lg rounded-[8] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
           >

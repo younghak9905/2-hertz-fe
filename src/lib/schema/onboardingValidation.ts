@@ -21,3 +21,22 @@ export const registerUserSchema = z.object({
     }),
   isTest: z.boolean(),
 });
+
+export const preferenceSchema = z.object({
+  keywords: z.object({
+    mbti: z.string().min(1, 'MBTI를 선택해주세요.'),
+    religion: z.string().min(1, '종교를 선택해주세요.'),
+    smoking: z.string().min(1, '흡연 여부를 선택해주세요.'),
+    drinking: z.string().min(1, '음주 여부를 선택해주세요.'),
+  }),
+  interests: z.object({
+    personality: z.array(z.string()).min(1, '성격을 하나 이상 선택해주세요.'),
+    preferredPeople: z.array(z.string()).min(1, '선호하는 사람을 하나 이상 선택해주세요.'),
+    currentInterests: z.array(z.string()).min(1, '관심사를 하나 이상 선택해주세요.'),
+    favoriteFoods: z.array(z.string()).min(1, '좋아하는 음식을 하나 이상 선택해주세요.'),
+    likedSports: z.array(z.string()).min(1, '좋아하는 운동을 하나 이상 선택해주세요.'),
+    pets: z.array(z.string()).min(1, '선호하는 반려동물을 하나 이상 선택해주세요.'),
+    selfDevelopment: z.array(z.string()).min(1, '자기계발 항목을 하나 이상 선택해주세요.'),
+    hobbies: z.array(z.string()).min(1, '취미를 하나 이상 선택해주세요.'),
+  }),
+});

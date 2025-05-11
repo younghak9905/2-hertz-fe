@@ -18,7 +18,7 @@ export default function InterestStep2() {
         description="* 중복 선택 가능"
         options={Personality}
         selected={selectedPersonality}
-        onSelect={(value) => setValue('interests.personality', value)}
+        onSelect={(value) => setValue('interests.personality', value, { shouldValidate: true })}
         multi
         maxSelect={10}
       />
@@ -29,7 +29,7 @@ export default function InterestStep2() {
         description="* 중복 선택 가능"
         options={PreferredPeople}
         selected={selectedPreferredPeople}
-        onSelect={(value) => setValue('interests.preferredPeople', value)}
+        onSelect={(value) => setValue('interests.preferredPeople', value, { shouldValidate: true })}
         multi
         maxSelect={10}
       />
