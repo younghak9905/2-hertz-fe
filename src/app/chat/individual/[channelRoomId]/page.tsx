@@ -66,7 +66,6 @@ export default function ChatsIndividualPage() {
       const response = await postChannelMessage(Number(channelRoomId), { message });
 
       if (response.code === 'MESSAGE_CREATED') {
-        await queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
         onSuccess();
       } else if (response.code === 'USER_DEACTIVATED') {
         toast.error('상대방이 탈퇴한 사용자입니다.');

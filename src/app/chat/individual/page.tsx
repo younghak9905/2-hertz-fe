@@ -31,7 +31,10 @@ export default function ChannelsIndividualPage() {
         {data.data?.list.map((room) => (
           <button
             key={room.channelRoomId}
-            onClick={() => router.push(`/chat/individual/${room.channelRoomId}?page=0&size=20`)}
+            onClick={() => {
+              console.log('채팅방 클릭됨:', room.channelRoomId);
+              router.push(`/chat/individual/${room.channelRoomId}?page=0&size=20`);
+            }}
             className="flex w-full appearance-none items-start gap-5 overflow-hidden border-none bg-transparent p-0 text-left"
           >
             <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
