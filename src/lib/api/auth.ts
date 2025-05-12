@@ -14,3 +14,27 @@ export const postKakaoLogin = async ({ code, state }: { code: string; state: str
   );
   return res.data;
 };
+
+export interface AccessTokenReissueResponse {
+  code: 'ACCESS_TOKEN_REISSUED';
+  message: string;
+  data: {
+    accessToken: string;
+  };
+}
+
+export interface RefreshTokenInvalidResponse {
+  code: 'REFRESH_TOKEN_INVALID';
+  message: string;
+  data: null;
+}
+
+export const reissueAccessToken = async (): Promise<AccessTokenReissueResponse> => {
+  const response = await axiosInstance.post<AccessTokenReissueResponse>(
+    `${BASE_URL}/v1/auth/token`,
+    {},
+    { withCredentials: true },
+  );
+
+  return response.data;
+};
