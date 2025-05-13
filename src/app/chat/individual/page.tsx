@@ -41,6 +41,8 @@ export default function ChannelsIndividualPage() {
             <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
               <div className="relative h-12 w-12 flex-shrink-0 rounded-full bg-blue-300">
                 <Image
+                  width={48}
+                  height={48}
                   src={room.partnerProfileImage || 'images/default-profile.jpg'}
                   alt="프로필 이미지"
                   className="h-full w-full rounded-full object-cover"

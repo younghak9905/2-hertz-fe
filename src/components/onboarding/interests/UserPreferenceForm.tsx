@@ -6,8 +6,7 @@ import InterestStep3 from './InterestStep3';
 import InterestStep4 from './InterestStep4';
 import KeywordStep1 from './KeywordStep1';
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { postRegisterInterest } from '@/lib/api/onboarding';
 import toast from 'react-hot-toast';
@@ -33,13 +32,30 @@ type PreferenceFormData = {
   };
 };
 
-export default function UserPreferenceForm() {
+interface UserPreferenceFormProps {
+  onStepChange: (step: number) => void;
+}
+
+export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const stepParam = parseInt(searchParams.get('step') || '1');
-  const [step, setStep] = useState(stepParam);
+
+  const getStepFromQuery = () => {
+    const step = parseInt(searchParams.get('step') || '1', 10);
+    return isNaN(step) ? 1 : step;
+  };
+
+  const [step, setStep] = useState(getStepFromQuery());
+
+  useEffect(() => {
+    const stepFromQuery = getStepFromQuery();
+    if (stepFromQuery !== step) {
+      setStep(stepFromQuery);
+      onStepChange?.(stepFromQuery);
+    }
+  }, [searchParams]);
 
   const methods = useForm<PreferenceFormData>({
     mode: 'onChange',
@@ -65,14 +81,23 @@ export default function UserPreferenceForm() {
   });
 
   useEffect(() => {
-    const stepFromQuery = searchParams.get('step');
+    const stepFromQuery = getStepFromQuery();
+    if (stepFromQuery !== step) {
+      setStep(stepFromQuery);
+    }
+  }, [searchParams]);
 
-    if (!stepFromQuery) {
+  useEffect(() => {
+    if (!searchParams.get('step')) {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.set('step', '1');
       router.replace(`${pathname}?${newParams.toString()}`);
     }
   }, [searchParams, router, pathname]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [step]);
 
   const goNextPage = () => {
     const { keywords, interests } = methods.getValues();
@@ -109,11 +134,9 @@ export default function UserPreferenceForm() {
     }
 
     const nextStep = step + 1;
-
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set('step', String(nextStep));
     router.push(`${pathname}?${newParams.toString()}`);
-    setStep(nextStep);
   };
 
   const onSubmit = async (data: PreferenceFormData) => {
@@ -126,10 +149,6 @@ export default function UserPreferenceForm() {
       toast.error('저장 중 오류가 발생했습니다.');
     }
   };
-
-  useEffect(() => {
-    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [step]);
 
   return (
     <FormProvider {...methods}>

@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import { formatKoreanDate } from '@/utils/format';
 
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
@@ -82,33 +83,38 @@ export default function ChatsIndividualPage() {
 
   return (
     <>
-      <main className="relative flex h-[calc(100vh-3.5rem)] w-full flex-col overflow-x-hidden px-6 pb-18">
+      <main className="relative flex h-full w-full flex-col overflow-x-hidden px-6 pb-18">
         <ChatHeader
           title={partner?.partnerNickname ?? ''}
           onLeave={() => console.log('나가기')}
           onToggleDetail={() => console.log('상세 보기 토글')}
         />
-        <div className="mx-auto mb-10 w-fit items-center justify-center rounded-2xl bg-[var(--gray-100)] px-4 py-1 text-sm font-semibold text-[var(--gray-400)]">
-          2025년 5월 5일 월요일
-        </div>
         <div className="flex flex-col gap-6">
-          {messages.map((msg) =>
-            msg.messageSenderId === partner?.partnerId ? (
-              <ReceiverMessage
-                key={msg.messageId}
-                nickname={partner?.partnerNickname ?? ''}
-                profileImage={partner?.partnerProfileImage ?? '/images/default-profile.png'}
-                contents={msg.messageContents}
-                sentAt={msg.messageSendAt}
-              />
-            ) : (
-              <SenderMessage
-                key={msg.messageId}
-                contents={msg.messageContents}
-                sentAt={msg.messageSendAt}
-              />
-            ),
-          )}
+          {messages.map((msg, index) => {
+            const currentDate = formatKoreanDate(msg.messageSendAt);
+            const prevDate = index > 0 ? formatKoreanDate(messages[index - 1].messageSendAt) : null;
+            const isNewDate = currentDate !== prevDate;
+
+            return (
+              <div key={msg.messageId}>
+                {isNewDate && (
+                  <div className="mx-auto mt-2 mb-4 w-fit rounded-2xl bg-[var(--gray-100)] px-4 py-1 text-sm font-semibold text-[var(--gray-400)]">
+                    {currentDate}
+                  </div>
+                )}
+                {msg.messageSenderId === partner?.partnerId ? (
+                  <ReceiverMessage
+                    nickname={partner?.partnerNickname ?? ''}
+                    profileImage={partner?.partnerProfileImage ?? '/images/default-profile.png'}
+                    contents={msg.messageContents}
+                    sentAt={msg.messageSendAt}
+                  />
+                ) : (
+                  <SenderMessage contents={msg.messageContents} sentAt={msg.messageSendAt} />
+                )}
+              </div>
+            );
+          })}
           <div ref={bottomRef} />
         </div>
       </main>
