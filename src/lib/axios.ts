@@ -7,13 +7,13 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config: any) => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       const isAuthPage = path.startsWith('/login') || path.startsWith('/onboarding/information');
       const token = localStorage.getItem('accessToken');
 
-      if (!isAuthPage && token) {
+      if (!isAuthPage && token && !config.url?.includes('/auth/token')) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
@@ -46,11 +46,11 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes('/auth/token')
-    ) {
+    const is401 = error.response?.status === 401;
+    const isAccessTokenExpired = error.response?.data?.code === 'ACCESS_TOKEN_EXPIRED';
+    const isNotTokenEndpoint = !originalRequest.url.includes('/auth/token');
+
+    if (is401 && isAccessTokenExpired && !originalRequest._retry && isNotTokenEndpoint) {
       originalRequest._retry = true;
 
       if (isRefreshing) {

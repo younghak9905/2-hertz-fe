@@ -1,4 +1,5 @@
 import axiosInstance from '@lib/axios';
+import axios from 'axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -30,7 +31,8 @@ export interface RefreshTokenInvalidResponse {
 }
 
 export const reissueAccessToken = async (): Promise<AccessTokenReissueResponse> => {
-  const response = await axiosInstance.post<AccessTokenReissueResponse>(
+  console.log('🔁 Token reissue 요청 보냄');
+  const response = await axios.post<AccessTokenReissueResponse>(
     `${BASE_URL}/v1/auth/token`,
     {},
     { withCredentials: true },
