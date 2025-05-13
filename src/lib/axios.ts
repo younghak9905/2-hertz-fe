@@ -1,20 +1,20 @@
-import axios from 'axios';
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { reissueAccessToken } from '@/lib/api/auth';
 
-const axiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
-  (config: any) => {
+  (config: InternalAxiosRequestConfig) => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       const isAuthPage = path.startsWith('/login') || path.startsWith('/onboarding/information');
       const token = localStorage.getItem('accessToken');
 
       if (!isAuthPage && token && !config.url?.includes('/auth/token')) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.set('Authorization', `Bearer ${token}`);
       }
     }
 
@@ -26,11 +26,11 @@ axiosInstance.interceptors.request.use(
 // 응답 인터셉터: 401 발생 시 AccessToken 재발급
 let isRefreshing = false;
 let failedQueue: {
-  resolve: (value?: any) => void;
-  reject: (reason?: any) => void;
+  resolve: (value: unknown) => void;
+  reject: (reason?: unknown) => void;
 }[] = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: unknown, token: string | null = null): void => {
   failedQueue.forEach((prom) => {
     if (token) {
       prom.resolve(token);
@@ -43,12 +43,14 @@ const processQueue = (error: any, token: string | null = null) => {
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: unknown) => {
+    if (!axios.isAxiosError(error)) return Promise.reject(error);
+
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     const is401 = error.response?.status === 401;
     const isAccessTokenExpired = error.response?.data?.code === 'ACCESS_TOKEN_EXPIRED';
-    const isNotTokenEndpoint = !originalRequest.url.includes('/auth/token');
+    const isNotTokenEndpoint = !originalRequest.url?.includes('/auth/token');
 
     if (is401 && isAccessTokenExpired && !originalRequest._retry && isNotTokenEndpoint) {
       originalRequest._retry = true;
@@ -56,11 +58,13 @@ axiosInstance.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
-            resolve: (token: string) => {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve: (token: unknown) => {
+              if (typeof originalRequest.headers?.set === 'function') {
+                originalRequest.headers.set('Authorization', `Bearer ${token}`);
+              }
               resolve(axiosInstance(originalRequest));
             },
-            reject: (err) => reject(err),
+            reject,
           });
         });
       }
@@ -75,11 +79,14 @@ axiosInstance.interceptors.response.use(
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
         processQueue(null, newToken);
 
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        if (typeof originalRequest.headers?.set === 'function') {
+          originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
+        }
+
         return axiosInstance(originalRequest);
-      } catch (err) {
+      } catch (err: unknown) {
         processQueue(err, null);
-        window.location.href = '/login';
+        // window.location.href = '/login';
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

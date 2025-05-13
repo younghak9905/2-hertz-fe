@@ -21,16 +21,6 @@ export default function OnboardingInformationWrapper() {
   useEffect(() => {
     if (!code || !state) return;
 
-    // 새로고침 또는 뒤로 가기로 돌아온 경우, providerId가 세션스토리지에 저장되어 있다면
-    // 추가 API 요청 없이 바로 신규 유저로 간주하여 다음 단계로 이동
-    const saved = sessionStorage.getItem('providerId');
-    if (saved) {
-      setProviderId(saved);
-      setIsNewUser(true);
-      setLoading(false);
-      return;
-    }
-
     const handleLogin = async () => {
       try {
         const response = await postKakaoLogin({ code, state });
@@ -40,6 +30,7 @@ export default function OnboardingInformationWrapper() {
           setProviderId(response.data.providerId);
           setIsNewUser(true);
         } else if (response.code === 'USER_ALREADY_REGISTERED') {
+          localStorage.setItem('accessToken', response.data.accessToken);
           router.replace('/home');
         } else if (response.code === 'OAUTH_STATE_INVALID') {
           toast.error('잘못된 접근입니다.');
@@ -48,9 +39,8 @@ export default function OnboardingInformationWrapper() {
           toast.error('로그인 요청 제한에 걸렸습니다. 잠시 후 다시 시도해주세요.');
           router.replace('/login');
         } else {
+          toast.error('알 수 없는 오류가 발생했습니다.');
           router.replace('/not-found');
-          toast.error('잘못된 접근입니다.');
-          throw new Error('알 수 없는 응답입니다.');
         }
       } catch (error) {
         console.error('postKakaoLogin 오류:', error);
@@ -62,7 +52,8 @@ export default function OnboardingInformationWrapper() {
     };
 
     handleLogin();
-  }, [code, state]);
+  }, [code, state, router]);
+
   if (loading) return null;
 
   return (

@@ -9,7 +9,7 @@ export const getKakaoRedirect = () => {
 
 export const postKakaoLogin = async ({ code, state }: { code: string; state: string }) => {
   const res = await axiosInstance.post(
-    `${BASE_URL}/v1/oauth/kakao`,
+    `/v1/oauth/kakao`,
     { code, state },
     { withCredentials: true },
   );
@@ -32,6 +32,8 @@ export interface RefreshTokenInvalidResponse {
 
 export const reissueAccessToken = async (): Promise<AccessTokenReissueResponse> => {
   console.log('🔁 Token reissue 요청 보냄');
+  axios.defaults.withCredentials = true;
+
   const response = await axios.post<AccessTokenReissueResponse>(
     `${BASE_URL}/v1/auth/token`,
     {},
