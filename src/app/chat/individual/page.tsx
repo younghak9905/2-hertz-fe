@@ -3,91 +3,82 @@
 import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { getChannelRooms } from '@/lib/api/chat';
-
-interface ChannelRoom {
-  channelRoomId: number;
-  partnerProfileImage: string;
-  partnerNickname: string;
-  lastMessage: string;
-  lastMessageTime: string;
-  isRead: boolean;
-  relationType: 'SIGNAL' | 'MATCHING';
-}
-
-const dummyData: ChannelRoom[] = [
-  {
-    channelRoomId: 1,
-    partnerProfileImage: '/images/cat-profile.png',
-    partnerNickname: '행복한 개구리',
-    lastMessage:
-      '안녕하세요! 저는 카카오테크 부트캠프 풀스택 2기 daisy입니다. 프론트엔드 개발자이자 2조 대표자입니다 ~!',
-    lastMessageTime: '2025-04-17T14:13:00',
-    isRead: true,
-    relationType: 'SIGNAL',
-  },
-  {
-    channelRoomId: 2,
-    partnerProfileImage: '/images/elephant-profile.png',
-    partnerNickname: '긍정의 토끼',
-    lastMessage:
-      '안녕하세요! 저는 카카오테크 부트캠프 풀스택 2기 daisy입니다. 프론트엔드 개발자이자 2조 대표자입니다 ~!',
-    lastMessageTime: '2025-04-08T09:00:00',
-    isRead: false,
-    relationType: 'MATCHING',
-  },
-];
+import { useRouter } from 'next/navigation';
+import Header from '@/components/layout/Header';
+import Image from 'next/image';
 
 export default function ChannelsIndividualPage() {
+  const router = useRouter();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['channelRooms', 0],
     queryFn: () => getChannelRooms(0, 10),
   });
 
-  if (isLoading) return <p>불러오는 중...</p>;
+  if (isLoading) return <p className="justify-center text-center text-sm">불러오는 중...</p>;
   if (isError || !data || data.code === 'NO_CHANNEL_ROOM') {
-    return <p>참여 중인 채널이 없습니다.</p>;
+    return (
+      <p className="justify-center text-center text-sm leading-6">
+        참여 중인 채널이 없습니다.
+        <br /> 매칭을 진행해주세요 :)
+      </p>
+    );
   }
 
   return (
-    <div className="mt-2 space-y-6 overflow-hidden px-4">
-      {data.data?.list.map((room) => (
-        <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
-          <div className="relative h-12 w-12 flex-shrink-0 rounded-full bg-blue-300">
-            <img
-              src={room.partnerProfileImage || 'images/default-profile.jpg'}
-              alt="프로필 이미지"
-              className="h-full w-full rounded-full object-cover"
-            />
-            {!room.isRead && (
-              <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-pink-400" />
-            )}
-          </div>
-
-          <div className="w-full flex-1 overflow-hidden">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 overflow-hidden">
-                <span
-                  className={`rounded-2xl px-2 py-1 text-xs font-semibold ${
-                    room.relationType === 'SIGNAL'
-                      ? 'bg-[var(--gray-100)] text-[var(--blue)]'
-                      : 'bg-[var(--light-pink)] text-[var(--pink)]'
-                  }`}
-                >
-                  {room.relationType === 'SIGNAL' ? '시그널' : '매칭'}
-                </span>
-                <span className="text-sm font-semibold text-ellipsis">{room.partnerNickname}</span>
+    <>
+      <Header title="채팅" showBackButton={false} showNotificationButton={true} />
+      <div className="mt-2 space-y-6 overflow-hidden px-4">
+        {data.data?.list.map((room) => (
+          <button
+            key={room.channelRoomId}
+            onClick={() => {
+              console.log('채팅방 클릭됨:', room.channelRoomId);
+              router.push(`/chat/individual/${room.channelRoomId}?page=0&size=20`);
+            }}
+            className="flex w-full appearance-none items-start gap-5 overflow-hidden border-none bg-transparent p-0 text-left"
+          >
+            <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
+              <div className="relative h-12 w-12 flex-shrink-0 rounded-full bg-blue-300">
+                <Image
+                  src={room.partnerProfileImage || 'images/default-profile.jpg'}
+                  alt="프로필 이미지"
+                  className="h-full w-full rounded-full object-cover"
+                />
+                {!room.isRead && (
+                  <span className="absolute right-0 bottom-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-pink-400" />
+                )}
               </div>
-              <span className="text-xs font-light text-[var(--gray-200)]">
-                {dayjs(room.lastMessageTime).format('A hh:mm')}
-              </span>
-            </div>
 
-            <p className="mt-1 line-clamp-2 text-sm font-light text-[var(--gray-400)]">
-              {room.lastMessage}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
+              <div className="w-full flex-1 overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <span
+                      className={`rounded-2xl px-2 py-1 text-xs font-semibold ${
+                        room.relationType === 'SIGNAL'
+                          ? 'bg-[var(--gray-100)] text-[var(--blue)]'
+                          : 'bg-[var(--light-pink)] text-[var(--pink)]'
+                      }`}
+                    >
+                      {room.relationType === 'SIGNAL' ? '시그널' : '매칭'}
+                    </span>
+                    <span className="text-sm font-semibold text-ellipsis">
+                      {room.partnerNickname}
+                    </span>
+                  </div>
+                  <span className="text-xs font-light text-[var(--gray-200)]">
+                    {dayjs(room.lastMessageTime).format('A hh:mm')}
+                  </span>
+                </div>
+
+                <p className="mt-1 line-clamp-2 text-sm font-light text-[var(--gray-400)]">
+                  {room.lastMessage}
+                </p>
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </>
   );
 }

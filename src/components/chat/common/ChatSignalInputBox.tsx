@@ -2,10 +2,6 @@
 
 import { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { postChannelMessage } from '@/lib/api/chat';
-import { useParams } from 'next/navigation';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 
 interface ChatSignalInputBoxProps {
   onSend: (message: string, onSuccess: () => void) => void;
@@ -13,15 +9,22 @@ interface ChatSignalInputBoxProps {
 
 export default function ChatSignalInputBox({ onSend }: ChatSignalInputBoxProps) {
   const [value, setValue] = useState('');
+  const [isComposing, setIsComposing] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
+    if (isSending) return;
+
     const message = value.trim();
     if (!message) return;
-    onSend(message, () => setValue(''));
+
+    setIsSending(true);
+    await onSend(message, () => setValue(''));
+    setIsSending(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !isComposing) {
       e.preventDefault();
       handleSend();
     }
@@ -33,6 +36,8 @@ export default function ChatSignalInputBox({ onSend }: ChatSignalInputBoxProps) 
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
         onKeyDown={handleKeyDown}
         placeholder="상대방에게 첫 시그널 보내기"
         className="ml-2 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-400"
