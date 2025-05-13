@@ -32,7 +32,11 @@ type PreferenceFormData = {
   };
 };
 
-export default function UserPreferenceForm() {
+interface UserPreferenceFormProps {
+  onStepChange: (step: number) => void;
+}
+
+export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -44,6 +48,14 @@ export default function UserPreferenceForm() {
   };
 
   const [step, setStep] = useState(getStepFromQuery());
+
+  useEffect(() => {
+    const stepFromQuery = getStepFromQuery();
+    if (stepFromQuery !== step) {
+      setStep(stepFromQuery);
+      onStepChange?.(stepFromQuery);
+    }
+  }, [searchParams]);
 
   const methods = useForm<PreferenceFormData>({
     mode: 'onChange',
