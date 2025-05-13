@@ -1,5 +1,4 @@
 import axiosInstance from '@/lib/axios';
-import { channel } from 'diagnostics_channel';
 
 export interface ChannelRoom {
   channelRoomId: number;

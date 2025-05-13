@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getChannelRooms } from '@/lib/api/chat';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
+import Image from 'next/image';
 
 export default function ChannelsIndividualPage() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export default function ChannelsIndividualPage() {
           >
             <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
               <div className="relative h-12 w-12 flex-shrink-0 rounded-full bg-blue-300">
-                <img
+                <Image
                   src={room.partnerProfileImage || 'images/default-profile.jpg'}
                   alt="프로필 이미지"
                   className="h-full w-full rounded-full object-cover"

@@ -2,10 +2,6 @@
 
 import { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { postChannelMessage } from '@/lib/api/chat';
-import { useParams } from 'next/navigation';
-import toast from 'react-hot-toast';
-import axios from 'axios';
 
 interface ChatSignalInputBoxProps {
   onSend: (message: string, onSuccess: () => void) => void;

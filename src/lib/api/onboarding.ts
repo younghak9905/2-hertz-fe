@@ -1,5 +1,4 @@
 import axiosInstance from '@lib/axios';
-import { CurrentInterests } from './../../constants/enum';
 // import { OneLineIntroductionInput } from '@components/onboarding/information/OneLineIntroductionInput';
 // import { AgeGroup } from './../../constants/enum';
 

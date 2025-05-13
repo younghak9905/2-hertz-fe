@@ -1,6 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { RegisterUserRequest } from '@/lib/api/onboarding';
-import { on } from 'events';
 import { useFormContext } from 'react-hook-form';
 
 export default function GenderSelectGroup() {

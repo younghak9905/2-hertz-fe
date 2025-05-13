@@ -1,13 +1,16 @@
 'use client';
 
 import { Button } from '@components/ui/button';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function NotFoundPage() {
   const router = useRouter();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-y-4 p-4">
-      <img src="/icons/404.png" alt="404 이미지" className="mb-8 h-auto w-full max-w-[200px]"></img>
+    <main className="flex h-full flex-col items-center justify-center gap-y-4 p-4">
+      <div className="relative h-[200px] w-full max-w-[200px]">
+        <Image src="/icons/404.png" alt="404 이미지" fill className="object-contain" />
+      </div>
       <p className="mb-18 text-center text-lg">
         찾을 수 없는 페이지입니다.
         <br />

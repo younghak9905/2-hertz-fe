@@ -72,7 +72,7 @@ export default function UserPreferenceForm() {
       newParams.set('step', '1');
       router.replace(`${pathname}?${newParams.toString()}`);
     }
-  }, []);
+  }, [searchParams, router, pathname]);
 
   const goNextPage = () => {
     const { keywords, interests } = methods.getValues();

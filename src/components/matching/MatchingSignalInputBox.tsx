@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
 import { postSignal } from '@/lib/api/matching';
 import axios from 'axios';

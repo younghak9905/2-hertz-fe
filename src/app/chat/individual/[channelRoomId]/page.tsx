@@ -19,7 +19,7 @@ import { useEffect, useRef } from 'react';
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
   const queryClient = useQueryClient();
-  const { ref, inView } = useInView();
+  const { inView } = useInView();
 
   const { data, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteQuery<ChannelRoomDetailResponse>({
@@ -66,7 +66,6 @@ export default function ChatsIndividualPage() {
       const response = await postChannelMessage(Number(channelRoomId), { message });
 
       if (response.code === 'MESSAGE_CREATED') {
-
         onSuccess();
       } else if (response.code === 'USER_DEACTIVATED') {
         toast.error('상대방이 탈퇴한 사용자입니다.');
@@ -74,6 +73,7 @@ export default function ChatsIndividualPage() {
         toast.error('알 수 없는 오류가 발생했습니다.');
       }
     } catch (err) {
+      console.error(err);
       toast.error('메세지 전송에 실패했습니다.');
     }
   };

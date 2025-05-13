@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { EnumSelectGrid } from './EnumSelectGrid';
 import { Personality, PreferredPeople } from '@/constants/enum';
 import HorizonBar from '@/components/common/horizonBar';
