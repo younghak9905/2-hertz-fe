@@ -54,7 +54,6 @@ export default function ChatsIndividualPage() {
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      console.log('👀 inView 트리거로 다음 페이지 요청!');
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
