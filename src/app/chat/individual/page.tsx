@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { getChannelRooms } from '@/lib/api/chat';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
@@ -13,6 +13,8 @@ export default function ChannelsIndividualPage() {
   const router = useRouter();
   const { ref, inView } = useInView();
 
+  const queryClient = useQueryClient();
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
       queryKey: ['channelRooms'],
@@ -22,6 +24,14 @@ export default function ChannelsIndividualPage() {
       },
       initialPageParam: 0,
     });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: ['channelRooms'] });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [queryClient]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
