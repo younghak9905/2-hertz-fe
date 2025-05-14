@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -11,15 +11,26 @@ import axios from 'axios';
 interface MatchingSignalInputBoxProps {
   onSend?: (message: string) => void;
   placeholder?: string;
+  reset?: boolean;
+  onResetDone?: () => void;
 }
 
 export default function MatchingSignalInputBox({
   onSend,
   placeholder = '상대방에게 첫 시그널 보내기',
+  reset,
+  onResetDone,
 }: MatchingSignalInputBoxProps) {
   const [value, setValue] = useState('');
   const receiverUserId = useTuningStore((state) => state.receiverUserId);
   const router = useRouter();
+
+  useEffect(() => {
+    if (reset) {
+      setValue('');
+      onResetDone?.();
+    }
+  }, [reset, onResetDone]);
 
   const handleSend = async () => {
     const message = value.trim();

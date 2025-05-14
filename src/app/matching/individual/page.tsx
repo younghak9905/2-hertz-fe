@@ -8,12 +8,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTuningUser } from '@/lib/api/matching';
 import Loading from './loading';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function IndividualMatchingPage() {
   const queryClient = useQueryClient();
   const setReceiverUserId = useTuningStore((state) => state.setReceiverUserId);
+  const [resetInput, setResetInput] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['tuningUser'],
@@ -53,6 +54,7 @@ export default function IndividualMatchingPage() {
 
   const handleRefresh = async () => {
     await queryClient.invalidateQueries({ queryKey: ['tuningUser'] });
+    setResetInput((prev) => !prev);
   };
 
   if (isLoading || !matchedUser || !data) {
@@ -79,7 +81,11 @@ export default function IndividualMatchingPage() {
             />
           </div>
           <div className="pt-8">
-            <MatchingSignalInputBox onSend={(message) => console.log('보낸 메시지:', message)} />
+            <MatchingSignalInputBox
+              onSend={(message) => console.log('보낸 메시지:', message)}
+              reset={resetInput}
+              onResetDone={() => setResetInput(false)}
+            />
           </div>
         </div>
       </main>
