@@ -89,7 +89,7 @@ export default function ChatsIndividualPage() {
       <p className="items-center justify-center text-sm font-medium">잘못된 채널 ID 입니다.</p>
     );
   if (isLoading)
-    return <p className="items-center justify-center text-sm font-medium">로딩 중...</p>;
+    return <p className="flex items-center justify-center text-sm font-medium">로딩 중...</p>;
 
   return (
     <>

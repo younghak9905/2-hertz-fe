@@ -39,7 +39,7 @@ export default function ChatSignalInputBox({ onSend }: ChatSignalInputBoxProps) 
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
         onKeyDown={handleKeyDown}
-        placeholder="상대방에게 첫 시그널 보내기"
+        placeholder="메세지를 입력해주세요"
         className="ml-2 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-400"
       />
       <button
