@@ -1,22 +1,36 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getChannelRooms } from '@/lib/api/chat';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Image from 'next/image';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 export default function ChannelsIndividualPage() {
   const router = useRouter();
+  const { ref, inView } = useInView();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['channelRooms', 0],
-    queryFn: () => getChannelRooms(0, 10),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
+    useInfiniteQuery({
+      queryKey: ['channelRooms'],
+      queryFn: ({ pageParam = 0 }) => getChannelRooms(pageParam, 10),
+      getNextPageParam: (lastPage) => {
+        return lastPage.data?.isLast ? undefined : (lastPage.data?.pageNumber ?? 0) + 1;
+      },
+      initialPageParam: 0,
+    });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   if (isLoading) return <p className="justify-center text-center text-sm">불러오는 중...</p>;
-  if (isError || !data || data.code === 'NO_CHANNEL_ROOM') {
+  if (isError || !data || data.pages[0].code === 'NO_CHANNEL_ROOM') {
     return (
       <p className="justify-center text-center text-sm leading-6">
         참여 중인 채널이 없습니다.
@@ -25,25 +39,26 @@ export default function ChannelsIndividualPage() {
     );
   }
 
+  const rooms = data.pages.flatMap((page) => page.data?.list ?? []) ?? [];
+
   return (
     <>
       <Header title="채팅" showBackButton={false} showNotificationButton={true} />
       <div className="mt-2 space-y-6 overflow-hidden px-4">
-        {data.data?.list.map((room) => (
+        {rooms.map((room, index) => (
           <button
             key={room.channelRoomId}
             onClick={() => {
-              console.log('채팅방 클릭됨:', room.channelRoomId);
               router.push(`/chat/individual/${room.channelRoomId}?page=0&size=20`);
             }}
             className="flex w-full appearance-none items-start gap-5 overflow-hidden border-none bg-transparent p-0 text-left"
           >
-            <div key={room.channelRoomId} className="flex w-full items-start gap-5 overflow-hidden">
+            <div className="flex w-full items-start gap-5 overflow-hidden">
               <div className="relative h-12 w-12 flex-shrink-0 rounded-full bg-blue-300">
                 <Image
                   width={48}
                   height={48}
-                  src={room.partnerProfileImage || 'images/default-profile.jpg'}
+                  src={room.partnerProfileImage || '/images/default-profile.png'}
                   alt="프로필 이미지"
                   className="h-full w-full rounded-full object-cover"
                 />
@@ -80,6 +95,11 @@ export default function ChannelsIndividualPage() {
             </div>
           </button>
         ))}
+
+        <div ref={ref} />
+        {isFetchingNextPage && (
+          <p className="text-center text-sm text-gray-400">채널을 불러오는 중...</p>
+        )}
       </div>
     </>
   );
