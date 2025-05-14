@@ -58,21 +58,3 @@ export const postTuningSignal = async (
   const response = await axiosInstance.post(`${BASE_URL}/v1/tuning/signal`, payload);
   return response.data;
 };
-
-interface SendSignalRequest {
-  receiverUserId: number;
-  message: string;
-}
-
-interface SendSignalResponse {
-  code: string;
-  message: string;
-  data: {
-    channelRoomId: number;
-  };
-}
-
-export const postSignal = async (payload: SendSignalRequest): Promise<SendSignalResponse> => {
-  const response = await axiosInstance.post(`${BASE_URL}/v1/tuning/signal`, payload);
-  return response.data;
-};

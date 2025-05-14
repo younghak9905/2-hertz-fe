@@ -5,7 +5,7 @@ import { ArrowUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useTuningStore } from '@/stores/matching/useTuningStore';
-import { postSignal } from '@/lib/api/matching';
+import { postTuningSignal } from '@/lib/api/matching';
 import axios from 'axios';
 
 interface MatchingSignalInputBoxProps {
@@ -26,7 +26,7 @@ export default function MatchingSignalInputBox({
     if (!message || !receiverUserId) return;
 
     try {
-      const res = await postSignal({ receiverUserId, message });
+      const res = await postTuningSignal({ receiverUserId, message });
       toast.success('시그널을 성공적으로 보냈습니다!');
       setValue('');
 
