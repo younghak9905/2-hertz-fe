@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
+import toast from 'react-hot-toast';
 
+const MAX_INPUT_LENGTH = 300;
 interface ChatSignalInputBoxProps {
   onSend: (message: string, onSuccess: () => void) => void;
 }
@@ -30,12 +32,21 @@ export default function ChatSignalInputBox({ onSend }: ChatSignalInputBoxProps) 
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = e.target.value;
+    if (inputText.length > MAX_INPUT_LENGTH) {
+      toast.error('300자 이상은 입력할 수 없습니다.');
+      return;
+    }
+    setValue(inputText);
+  };
+
   return (
     <div className="flex w-full items-center justify-between rounded-full bg-[#f2f6fa] px-2 py-1.5">
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
         onKeyDown={handleKeyDown}

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   themeColor: '#ffffff',
   viewport:
-    'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=auto',
+    'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover',
   icons: {
     icon: '/icons/favicon.png',
   },
