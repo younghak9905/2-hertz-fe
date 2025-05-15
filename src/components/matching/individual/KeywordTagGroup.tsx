@@ -25,8 +25,7 @@ export default function KeywordTagGroup({
       </div>
 
       <div className="mb-4 space-y-1.5">
-        <p className="font-semibold">{nickname} 님의 관심사에요</p>
-        <p className="mb-5 text-xs text-[var(--gray-300)]">* 공통 관심사는 파란색으로 표시됩니다</p>
+        <p className="font-semibold">함께 나누는 공통 관심사에요</p>
       </div>
 
       <KeywordTag keywords={commonInterestList} variant="common" />

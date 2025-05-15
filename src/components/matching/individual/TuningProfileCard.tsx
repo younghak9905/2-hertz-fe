@@ -5,6 +5,7 @@ import { IoRefreshCircle } from 'react-icons/io5';
 import clsx from 'clsx';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { Gender } from '@/constants/enum';
 
 interface TuningProfileCardProps {
   profileImage: string;
@@ -62,7 +63,9 @@ export default function TuningProfileCard({
         </div>
 
         <p className="mt-3 truncate text-center text-lg font-semibold">{nickname}</p>
-        <p className="truncate text-center text-sm text-[var(--gray-300)]">{gender}</p>
+        <p className="truncate text-center text-sm text-[var(--gray-300)]">
+          {gender === 'MALE' ? '남성' : gender === 'FEMALE' ? '여성' : '성별 정보 없음'}
+        </p>
       </div>
 
       <div className="mt-6 mb-6 max-w-[25rem] rounded-2xl border-[1.5] px-4 py-2">

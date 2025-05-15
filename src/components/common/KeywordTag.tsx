@@ -45,6 +45,9 @@ export default function KeywordTag({ keywords, variant = 'default' }: KeywordTag
       {keywords.map((keyword, i) => {
         const label = ALL_KEYWORD_MAP[keyword as keyof typeof ALL_KEYWORD_MAP] || keyword;
 
+        const isPreferredPeople = Object.keys(PreferredPeople).includes(keyword);
+        const displayLabel = isPreferredPeople ? `👩🏻‍❤️‍👨🏻 ${label}` : label;
+
         return (
           <div
             key={i}
@@ -54,7 +57,7 @@ export default function KeywordTag({ keywords, variant = 'default' }: KeywordTag
                 : 'border-[var(--gray-200)] text-black'
             }`}
           >
-            # {label}
+            # {displayLabel}
           </div>
         );
       })}

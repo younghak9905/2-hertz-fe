@@ -64,7 +64,7 @@ export default function UserInformationForm({ providerId }: UserInformationFormP
 
   return (
     <FormProvider {...methods}>
-      <form className="space-y-10" onSubmit={handleSubmit}>
+      <form className="w-full space-y-10 overflow-x-hidden" onSubmit={handleSubmit}>
         <ProfileImageSelector />
         {/* <EmailInputSection onVerify={handleVerify} isVerified={isEmailVerified} /> */}
         <GenderSelectGroup />

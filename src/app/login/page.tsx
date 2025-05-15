@@ -21,7 +21,7 @@ export default function LoginPage() {
         <Image src="/icons/logo-blue.png" alt="logo-blue" width={120} height={100} />
       </div>
 
-      <p className="mt-12 mb-40 text-center font-light text-[var(--gray-400)]">
+      <p className="text-md mt-12 mb-32 text-center font-light text-[var(--gray-400)]">
         당신만의 주파수를 찾고 있다면, <br /> 지금 튜닝으로 시작해보세요
       </p>
 

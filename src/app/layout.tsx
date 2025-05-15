@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title: '튜닝',
   description: '조직 기반 소셜 매칭 서비스',
   manifest: '/manifest.webmanifest',
-  themeColor: '#000000',
+  themeColor: '#ffffff',
   viewport:
-    'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=auto',
+    'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover',
   icons: {
     icon: '/icons/favicon.png',
   },
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} font-pretendard flex min-h-screen flex-col items-center`}
+        className={`${pretendard.variable} font-pretendard flex min-h-screen touch-manipulation flex-col items-center overscroll-none`}
       >
         <Providers>
           <ClientLayoutContent>{children}</ClientLayoutContent>

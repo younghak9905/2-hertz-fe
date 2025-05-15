@@ -45,7 +45,7 @@ export default function ReceiverMessage({
         <p className="mt-1 text-sm font-semibold text-[var(--gray-400)]">{nickname}</p>
         <div className="mt-1.5 flex pr-4">
           <div className="flex max-w-[16rem] items-end gap-2">
-            <div className="inline-block rounded-3xl border border-[var(--blue)] bg-white px-4 py-2 text-xs leading-[1.4] text-black">
+            <div className="inline-block rounded-3xl border border-[var(--blue)] bg-white px-4 py-2 text-xs leading-[1.4] break-all whitespace-pre-wrap text-black">
               {contents}
             </div>
             <p className="mt-1 text-xs text-[var(--gray-300)]">{dayjs(sentAt).format('HH:mm')}</p>

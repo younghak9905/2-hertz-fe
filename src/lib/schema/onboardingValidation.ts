@@ -15,10 +15,7 @@ export const registerUserSchema = z.object({
   oneLineIntroduction: z
     .string()
     .min(10, { message: '최소 10자 이상 작성해주세요.' })
-    .max(100, { message: '최대 100자까지만 작성할 수 있어요.' })
-    .regex(/^[\w\s가-힣ㄱ-ㅎㅏ-ㅣ.-]*$/, {
-      message: '특수문자는 _ , - , 점(.) , 공백만 사용할 수 있어요.',
-    }),
+    .max(100, { message: '최대 100자까지만 작성할 수 있어요.' }),
   isTest: z.boolean(),
 });
 

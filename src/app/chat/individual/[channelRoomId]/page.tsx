@@ -20,19 +20,24 @@ import { formatKoreanDate } from '@/utils/format';
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
   const queryClient = useQueryClient();
-  const { inView } = useInView();
+  const { ref: scrollRef, inView } = useInView();
+
+  const parsedChannelRoomId = Number(channelRoomId);
+  const isChannelRoomIdValid = !!channelRoomId && !isNaN(parsedChannelRoomId);
 
   const { data, isLoading, fetchNextPage, hasNextPage } =
     useInfiniteQuery<ChannelRoomDetailResponse>({
-      queryKey: ['channelRoom', channelRoomId],
-      queryFn: ({ pageParam = 0 }) =>
-        getChannelRoomDetail(Number(channelRoomId), pageParam as number, 20),
-      getNextPageParam: (lastPage) => {
-        if (!lastPage?.data?.pageable) return undefined;
-        return lastPage.data.pageable.isLast ? undefined : lastPage.data.pageable.pageNumber + 1;
+      queryKey: ['channelRoom', parsedChannelRoomId],
+      queryFn: ({ pageParam = 0 }) => {
+        const page = pageParam as number;
+        return getChannelRoomDetail(parsedChannelRoomId, page, 20);
       },
-      enabled: !!channelRoomId,
+      getNextPageParam: (lastPage) => {
+        const pagination = lastPage.data.messages.pageable;
+        return pagination.isLast ? undefined : pagination.pageNumber + 1;
+      },
       initialPageParam: 0,
+      enabled: isChannelRoomIdValid,
     });
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -56,15 +61,15 @@ export default function ChatsIndividualPage() {
   // polling
   useEffect(() => {
     const interval = setInterval(() => {
-      queryClient.invalidateQueries({ queryKey: ['channelRoom', channelRoomId] });
+      queryClient.invalidateQueries({ queryKey: ['channelRoom', parsedChannelRoomId] });
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [channelRoomId, queryClient]);
+  }, [parsedChannelRoomId, queryClient]);
 
   const handleSend = async (message: string, onSuccess: () => void) => {
     try {
-      const response = await postChannelMessage(Number(channelRoomId), { message });
+      const response = await postChannelMessage(parsedChannelRoomId, { message });
 
       if (response.code === 'MESSAGE_CREATED') {
         onSuccess();
@@ -79,7 +84,12 @@ export default function ChatsIndividualPage() {
     }
   };
 
-  if (isLoading) return <p>로딩 중...</p>;
+  if (!isChannelRoomIdValid)
+    return (
+      <p className="items-center justify-center text-sm font-medium">잘못된 채널 ID 입니다.</p>
+    );
+  if (isLoading)
+    return <p className="flex items-center justify-center text-sm font-medium">로딩 중...</p>;
 
   return (
     <>
@@ -96,7 +106,7 @@ export default function ChatsIndividualPage() {
             const isNewDate = currentDate !== prevDate;
 
             return (
-              <div key={msg.messageId}>
+              <div key={msg.messageId} ref={index === messages.length - 1 ? scrollRef : null}>
                 {isNewDate && (
                   <div className="mx-auto mt-2 mb-4 w-fit rounded-2xl bg-[var(--gray-100)] px-4 py-1 text-sm font-semibold text-[var(--gray-400)]">
                     {currentDate}
