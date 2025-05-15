@@ -10,7 +10,7 @@ export default function ChannelsPage() {
 
   return (
     <>
-      <Header title="채팅하기" showBackButton={false} showNotificationButton={true} />
+      <Header title="채팅" showBackButton={false} showNotificationButton={true} />
       <main className="flex h-full flex-col overflow-y-auto px-4 py-2">
         <div className="flex justify-between px-16 pb-2">
           <button
