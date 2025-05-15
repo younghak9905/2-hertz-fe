@@ -86,7 +86,12 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (err: unknown) {
         processQueue(err, null);
-        // window.location.href = '/login';
+
+        if (axios.isAxiosError(err) && err.response?.data?.code === 'REFRESH_TOKEN_INVALID') {
+          localStorage.removeItem('accessToken');
+          window.location.href = '/login';
+          return;
+        }
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
