@@ -27,8 +27,13 @@ export default function KeywordTagGroup({
       <div className="mb-4 space-y-1.5">
         <p className="font-semibold">함께 나누는 공통 관심사에요</p>
       </div>
-
-      <KeywordTag keywords={commonInterestList} variant="common" />
+      {commonInterestList.length > 0 ? (
+        <KeywordTag keywords={commonInterestList} variant="common" />
+      ) : (
+        <p className="items-center justify-center text-sm font-light text-[var(--gray-300)]">
+          공통 관심사가 존재하지 않습니다.
+        </p>
+      )}
     </main>
   );
 }
