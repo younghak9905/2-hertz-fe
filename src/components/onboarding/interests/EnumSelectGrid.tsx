@@ -40,7 +40,9 @@ export const EnumSelectGrid = (props: EnumSelectGridProps) => {
           onSelect(current.filter((item) => item !== key));
         } else {
           if (current.length >= maxSelect) {
-            toast.error(`최대 ${maxSelect}개까지만 선택할 수 있어요`);
+            toast.error(`최대 ${maxSelect}개까지만 선택할 수 있어요`, {
+              id: 'max-select-limit',
+            });
             return;
           }
           onSelect([...current, key]);
