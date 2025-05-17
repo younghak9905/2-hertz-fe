@@ -52,7 +52,7 @@ export default function MatchingSignalInputBox({
         if (code === 'USER_DEACTIVATED') {
           toast.error('상대방이 탈퇴한 사용자입니다.');
         } else if (code === 'ALREADY_IN_CONVERSATION') {
-          toast.error('이미 대화 중인 상대방입니다.');
+          toast('상대방이 먼저 채팅을 시작했습니다. 채팅방을 확인해주세요!', { icon: '👋🏻' });
         } else {
           toast.error('시그널 전송에 실패했습니다.');
         }
