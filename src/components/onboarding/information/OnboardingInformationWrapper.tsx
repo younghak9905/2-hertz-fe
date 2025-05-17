@@ -29,9 +29,14 @@ export default function OnboardingInformationWrapper() {
           sessionStorage.setItem('providerId', response.data.providerId);
           setProviderId(response.data.providerId);
           setIsNewUser(true);
+          return;
         } else if (response.code === 'USER_ALREADY_REGISTERED') {
           localStorage.setItem('accessToken', response.data.accessToken);
           router.replace('/home');
+          return;
+        } else if (response.code === 'USER_INTERESTS_NOT_SELECTED') {
+          localStorage.setItem('accessToken', response.data.accessToken);
+          router.replace('/onboarding/interests');
         } else if (response.code === 'OAUTH_STATE_INVALID') {
           toast.error('잘못된 접근입니다.');
           router.replace('/not-found');
