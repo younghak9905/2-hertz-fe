@@ -78,6 +78,7 @@ export default function MatchingSignalInputBox({
         className="ml-2 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-400"
       />
       <button
+        type="button"
         onClick={handleSend}
         className="ml-2 flex h-6 w-6 items-center justify-center rounded-full bg-white shadow"
       >
