@@ -24,6 +24,7 @@ export default function MatchingSignalInputBox({
   const [value, setValue] = useState('');
   const receiverUserId = useTuningStore((state) => state.receiverUserId);
   const router = useRouter();
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     if (reset) {
@@ -33,10 +34,13 @@ export default function MatchingSignalInputBox({
   }, [reset, onResetDone]);
 
   const handleSend = async () => {
+    if (isSending) return;
+
     const message = value.trim();
     if (!message || !receiverUserId) return;
 
     try {
+      setIsSending(true);
       const res = await postTuningSignal({ receiverUserId, message });
       toast.success('시그널을 성공적으로 보냈습니다!');
       setValue('');
@@ -57,6 +61,8 @@ export default function MatchingSignalInputBox({
           toast.error('시그널 전송에 실패했습니다.');
         }
       }
+    } finally {
+      setIsSending(false);
     }
   };
 
