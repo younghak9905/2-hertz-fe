@@ -47,16 +47,21 @@ jobs:
   #           echo "$2=$VALUE" >> $GITHUB_ENV
   #         }
 
-          # if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          #   if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
-          #     echo "BRANCH=main" >> $GITHUB_ENV
-          #   else
-          #     echo "BRANCH=develop" >> $GITHUB_ENV
-          #   fi
-          # else
-          #   echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-          # fi
-          # echo "🍀 BRANCH=$BRANCH"
+  #         if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+  #           echo "💥 trigger: [workflow_dispatch]"
+  #           if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
+  #             echo "BRANCH=main" >> $GITHUB_ENV
+  #             BRANCH=main
+  #           else
+  #             echo "BRANCH=develop" >> $GITHUB_ENV
+  #             BRANCH=develop
+  #           fi
+  #         else
+  #           echo "💥 trigger: [PR merge]"
+  #           echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+  #           BRANCH="${{ github.ref_name }}"
+  #         fi
+  #         echo "🍀 BRANCH=$BRANCH"
 
   #         if [[ "$BRANCH" == "main" ]]; then
   #           echo "ENV=PROD" >> $GITHUB_ENV
@@ -168,20 +173,9 @@ jobs:
             echo "$VALUE" > "$2"
           }
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
-              echo "BRANCH=main" >> $GITHUB_ENV
-            else
-              echo "BRANCH=develop" >> $GITHUB_ENV
-            fi
-          else
-            echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-          fi
-          echo "🍀 BRANCH=$BRANCH"
-
           load_param "/global/gcp/GCP_ZONE" ZONE
 
-          if [[ "$BRANCH" == "main" ]]; then
+          if [[ "${{ github.event.inputs.env }}" == "PROD" || "${{ github.ref_name }}" == "main"]]; then
             echo "ENV=PROD" >> $GITHUB_ENV
             load_param "/global/gcp/PROD_GCP_HOST" HOST
             load_param "/global/gcp/PROD_GCP_INSTANCE" INSTANCE
@@ -335,13 +329,18 @@ jobs:
           }
 
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "💥 trigger: [workflow_dispatch]"
             if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
               echo "BRANCH=main" >> $GITHUB_ENV
+              BRANCH=main
             else
               echo "BRANCH=develop" >> $GITHUB_ENV
+              BRANCH=develop
             fi
           else
+            echo "💥 trigger: [PR merge]"
             echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+            BRANCH="${{ github.ref_name }}"
           fi
           echo "🍀 BRANCH=$BRANCH"
 
