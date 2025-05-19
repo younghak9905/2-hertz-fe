@@ -41,6 +41,7 @@ export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormP
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const getStepFromQuery = () => {
     const step = parseInt(searchParams.get('step') || '1', 10);
@@ -140,6 +141,8 @@ export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormP
   };
 
   const onSubmit = async (data: PreferenceFormData) => {
+    if (isSubmit) return;
+    setIsSubmit(true);
     try {
       await postRegisterInterest(data);
       toast.success('저장이 완료되었습니다.');
@@ -147,6 +150,8 @@ export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormP
     } catch (error) {
       console.error('제출 오류: ', error);
       toast.error('저장 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmit(false);
     }
   };
 
@@ -181,7 +186,7 @@ export default function UserPreferenceForm({ onStepChange }: UserPreferenceFormP
             type="button"
             className="mb-4 w-full max-w-lg rounded-[8] bg-[var(--gray-400)] px-2 py-3 text-center text-sm font-semibold text-white"
           >
-            <p>{step === 4 ? '저장하기' : '다음으로'}</p>
+            <p>{step === 4 ? (isSubmit ? '저장 중' : '저장하기') : '다음으로'}</p>
           </Button>
         </div>
       </main>
