@@ -11,7 +11,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
 import { useRouter } from 'next/navigation';
-import HorizonBar from '@/components/common/horizonBar';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
@@ -65,7 +64,7 @@ export default function AlarmPage() {
                   onClick={() => router.push('/report')}
                   className="cursor-pointer rounded-xl border-b bg-white px-4 py-4 transition hover:bg-gray-50"
                 >
-                  <div className="mb-1 flex items-center justify-between">
+                  <div className="mt-1 mb-1 flex items-center justify-between">
                     <span className="flex-shrink-0 rounded-2xl bg-[var(--light-blue)] px-2.5 py-1 text-xs font-semibold text-[var(--dark-blue)]">
                       튜닝
                     </span>
