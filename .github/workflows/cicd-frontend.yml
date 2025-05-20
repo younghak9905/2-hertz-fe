@@ -47,16 +47,21 @@ jobs:
   #           echo "$2=$VALUE" >> $GITHUB_ENV
   #         }
 
-          # if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          #   if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
-          #     echo "BRANCH=main" >> $GITHUB_ENV
-          #   else
-          #     echo "BRANCH=develop" >> $GITHUB_ENV
-          #   fi
-          # else
-          #   echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-          # fi
-          # echo "🍀 BRANCH=$BRANCH"
+  #         if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+  #           echo "💥 trigger: [workflow_dispatch]"
+  #           if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
+  #             echo "BRANCH=main" >> $GITHUB_ENV
+  #             BRANCH=main
+  #           else
+  #             echo "BRANCH=develop" >> $GITHUB_ENV
+  #             BRANCH=develop
+  #           fi
+  #         else
+  #           echo "💥 trigger: [PR merge]"
+  #           echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+  #           BRANCH="${{ github.ref_name }}"
+  #         fi
+  #         echo "🍀 BRANCH=$BRANCH"
 
   #         if [[ "$BRANCH" == "main" ]]; then
   #           echo "ENV=PROD" >> $GITHUB_ENV
@@ -168,19 +173,10 @@ jobs:
             echo "$VALUE" > "$2"
           }
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
-              echo "BRANCH=main" >> $GITHUB_ENV
-            else
-              echo "BRANCH=develop" >> $GITHUB_ENV
-            fi
-          else
-            echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-          fi
-          echo "🍀 BRANCH=$BRANCH"
-
           load_param "/global/gcp/GCP_ZONE" ZONE
 
+          BRANCH="${{ github.ref_name }}"
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           if [[ "$BRANCH" == "main" ]]; then
             echo "ENV=PROD" >> $GITHUB_ENV
             load_param "/global/gcp/PROD_GCP_HOST" HOST
@@ -194,10 +190,6 @@ jobs:
             load_param "/global/gcp/DEV_GCP_PROJECT_ID" PROJECT_ID
             load_secret_to_file "/global/gcp/DEV_GCP_SA_KEY" gcp-sa-key.json
           fi
-
-          echo "SA_KEY<<EOF" >> $GITHUB_ENV
-          cat gcp-sa-key.json >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
           load_param "/global/gcp/SSH_USERNAME" SSH_USERNAME
           load_secret_to_file "/global/gcp/SSH_PRIVATE_KEY" id_rsa
@@ -334,19 +326,10 @@ jobs:
             echo "$VALUE" > "$2"
           }
 
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            if [[ "${{ github.event.inputs.env }}" == "PROD" ]]; then
-              echo "BRANCH=main" >> $GITHUB_ENV
-            else
-              echo "BRANCH=develop" >> $GITHUB_ENV
-            fi
-          else
-            echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
-          fi
-          echo "🍀 BRANCH=$BRANCH"
-
           load_param "/global/gcp/GCP_ZONE" ZONE
 
+          BRANCH="${{ github.ref_name }}"
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           if [[ "$BRANCH" == "main" ]]; then
             echo "ENV=PROD" >> $GITHUB_ENV
             load_param "/global/gcp/PROD_GCP_HOST" HOST
@@ -360,10 +343,6 @@ jobs:
             load_param "/global/gcp/DEV_GCP_PROJECT_ID" PROJECT_ID
             load_secret_to_file "/global/gcp/DEV_GCP_SA_KEY" gcp-sa-key.json
           fi
-
-          echo "SA_KEY<<EOF" >> $GITHUB_ENV
-          cat gcp-sa-key.json >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
           load_param "/global/gcp/SSH_USERNAME" SSH_USERNAME
           load_secret_to_file "/global/gcp/SSH_PRIVATE_KEY" id_rsa
