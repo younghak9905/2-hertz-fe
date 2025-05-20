@@ -29,11 +29,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} font-pretendard flex min-h-screen touch-manipulation flex-col items-center overscroll-none bg-[var(--blue)]`}
+        className={`${pretendard.variable} font-pretendard flex min-h-screen touch-manipulation flex-col items-center overscroll-none bg-[url('/images/bg.png')] bg-cover bg-center bg-no-repeat`}
       >
         <Providers>
           <ClientLayoutContent>
-            <div className="mx-auto min-h-full w-full max-w-md bg-white">{children}</div>
+            <div className="mx-auto flex h-screen w-full max-w-md flex-col bg-white">
+              {children}
+            </div>
           </ClientLayoutContent>
         </Providers>
         <Toaster />
