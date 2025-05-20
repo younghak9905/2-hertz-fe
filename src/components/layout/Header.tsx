@@ -21,6 +21,10 @@ export default function Header({
     router.back();
   };
 
+  const handleAlarm = () => {
+    router.replace('/alarm');
+  };
+
   return (
     <header className="fixed top-0 left-1/2 z-50 box-border flex h-14 w-full max-w-[430px] -translate-x-1/2 items-center justify-between gap-8 border-none bg-white px-4">
       <div className="flex w-8 items-center">
@@ -35,7 +39,7 @@ export default function Header({
 
       <div>
         {showNotificationButton ? (
-          <button className="p-1">
+          <button onClick={handleAlarm} className="p-1">
             <FaRegBell className="text-[clamp(1rem,2.5vw,1.2rem)]" />
           </button>
         ) : (
