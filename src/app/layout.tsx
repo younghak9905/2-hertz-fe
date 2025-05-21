@@ -33,9 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <Providers>
           <ClientLayoutContent>
-            <div className="mx-auto flex h-screen w-full max-w-md flex-col bg-white">
-              {children}
-            </div>
+            <div className="mx-auto flex w-full max-w-md flex-col bg-white">{children}</div>
           </ClientLayoutContent>
         </Providers>
         <Toaster />
