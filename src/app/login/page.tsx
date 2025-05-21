@@ -15,7 +15,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-10">
+    <main className="flex h-screen flex-col items-center justify-center px-10">
       <div className="mt-[3.5rem] flex flex-col items-center gap-8">
         <Image src="/icons/logo-main.svg" alt="logo" width={250} height={500} />
       </div>
