@@ -11,9 +11,9 @@ on:
   workflow_dispatch:
     inputs:
       env:
-        description: "배포 환경 선택"
+        description: '배포 환경 선택'
         required: true
-        default: "DEV"
+        default: 'DEV'
         type: choice
         options:
           - DEV
@@ -206,7 +206,7 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: "${{ env.SA_KEY }}"
+          credentials_json: '${{ env.SA_KEY }}'
 
       - name: Setup gcloud CLI
         uses: google-github-actions/setup-gcloud@v1
@@ -359,7 +359,7 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: "${{ env.SA_KEY }}"
+          credentials_json: '${{ env.SA_KEY }}'
 
       - name: Setup gcloud CLI
         uses: google-github-actions/setup-gcloud@v1
