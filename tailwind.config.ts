@@ -11,12 +11,6 @@ const config: Config = {
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },
-      padding: {
-        'safe-b': 'env(safe-area-inset-bottom)',
-      },
-      height: {
-        'nav-safe': 'calc(3.5rem + env(safe-area-inset-bottom))',
-      },
     },
   },
   plugins: [],
