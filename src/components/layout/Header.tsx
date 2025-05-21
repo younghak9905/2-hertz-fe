@@ -39,7 +39,7 @@ export default function Header({
 
       <div>
         {showNotificationButton ? (
-          <button onClick={handleAlarm} className="p-1">
+          <button className="p-1">
             <FaRegBell className="text-[clamp(1rem,2.5vw,1.2rem)]" />
           </button>
         ) : (
