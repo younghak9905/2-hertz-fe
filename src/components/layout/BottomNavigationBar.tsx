@@ -16,7 +16,7 @@ export default function BottomNavigationBar() {
   if (shouldHide) return null;
 
   return (
-    <nav className="fixed bottom-0 z-50 flex h-14 w-full max-w-[430px] items-center justify-around border-t bg-white">
+    <nav className="fixed bottom-0 z-50 flex h-[3.5rem] w-full max-w-[430px] items-center justify-around border-t bg-white pb-[env(safe-area-inset-bottom)]">
       <button
         onClick={() => router.push('/home')}
         className="flex flex-col items-center gap-1 text-xs"

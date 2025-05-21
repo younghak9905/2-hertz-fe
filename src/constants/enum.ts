@@ -53,7 +53,7 @@ export const MBTI = {
   ESFJ: 'ESFJ',
   ENFJ: 'ENFJ',
   ENTJ: 'ENTJ',
-  UNKWON: 'MBTI 모름',
+  UNKNOWN: 'MBTI 모름',
 } as const;
 
 export const Personality = {
@@ -181,7 +181,7 @@ export const FavoriteFoods = {
   FRUIT: '과일',
   WESTERN: '양식',
   STREET_FOOD: '스트릿 푸드',
-  BAKERY: '베이커리',
+  BAKERY: '제과류',
   HAMBURGER: '햄버거',
   PIZZA: '피자',
   BRUNCH: '브런치',
