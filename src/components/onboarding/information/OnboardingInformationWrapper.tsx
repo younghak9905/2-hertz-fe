@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { postKakaoLogin } from '@/lib/api/auth';
 import Header from '@/components/layout/Header';
@@ -17,12 +17,9 @@ export default function OnboardingInformationWrapper() {
   const [isNewUser, setIsNewUser] = useState(false);
   const [providerId, setProviderId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const hasRequested = useRef(false);
 
   useEffect(() => {
-    if (!code || !state || hasRequested.current) return;
-
-    hasRequested.current = true;
+    if (!code || !state) return;
 
     const handleLogin = async () => {
       try {

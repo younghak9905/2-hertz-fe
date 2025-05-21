@@ -142,7 +142,7 @@ body {
   @apply bg-background text-foreground;
   font-family: 'Pretendard', sans-serif;
   height: 100dvh;
-  background-color: var(--blue);
+  background-color: white !important;
 }
 
 @supports (-webkit-touch-callout: none) {

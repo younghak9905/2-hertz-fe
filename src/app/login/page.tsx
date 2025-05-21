@@ -20,11 +20,15 @@ export default function LoginPage() {
         <Image src="/icons/logo-main.svg" alt="logo" width={250} height={500} />
       </div>
 
+      <p className="text-md mt-12 mb-32 text-center font-light text-[var(--gray-400)]">
+        당신만의 주파수를 찾고 있다면, <br /> 지금 튜닝으로 시작해보세요
+      </p>
+
       <div
         onClick={handleLogin}
-        className="mt-20 cursor-pointer transition hover:opacity-90 active:scale-98"
+        className="cursor-pointer transition hover:opacity-90 active:scale-98"
       >
-        <Image src="/icons/kakao-login.svg" alt="kakao login" width={300} height={300} />
+        <Image src="/icons/kakao-login.png" alt="kakao login" width={300} height={300} />
       </div>
     </main>
   );
