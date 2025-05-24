@@ -30,7 +30,7 @@ export default function Header({
       <div className="flex w-8 items-center">
         {showBackButton && (
           <button onClick={handleBack} className="p-1">
-            <FaAngleLeft className="text-[clamp(1rem,2.5vw,1.2rem)]" />
+            <FaAngleLeft className="text-[clamp(1rem,2vw,1.2rem)]" />
           </button>
         )}
       </div>
@@ -40,7 +40,7 @@ export default function Header({
       <div>
         {showNotificationButton ? (
           <button className="p-1">
-            <FaRegBell className="text-[clamp(1rem,2.5vw,1.2rem)]" />
+            <FaRegBell className="text-[clamp(1rem,2vw,1.2rem)]" />
           </button>
         ) : (
           <div className="w-5" />
