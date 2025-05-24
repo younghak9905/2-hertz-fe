@@ -40,7 +40,9 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
       }`}
     >
       {!isHiddenUI && <Header title="" showBackButton={false} showNotificationButton={false} />}
-      <div className={`flex-grow overflow-y-auto ${isHiddenUI ? '' : 'pt-[56px] pb-[56px]'}`}>
+      <div
+        className={`flex-grow overflow-y-auto shadow-lg ${isHiddenUI ? '' : 'pt-[56px] pb-[56px]'}`}
+      >
         {children}
       </div>
       {!isHiddenUI && <BottomNavigationBar />}
