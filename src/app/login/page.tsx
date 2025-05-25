@@ -17,14 +17,14 @@ export default function LoginPage() {
   return (
     <main className="flex h-screen flex-col items-center justify-center px-10">
       <div className="flex flex-col items-center gap-8">
-        <Image src="/icons/logo-main.svg" alt="logo" width={250} height={500} />
+        <Image src="/icons/logo-main.svg" alt="logo" width={250} height={500} priority />
       </div>
 
       <div
         onClick={handleLogin}
         className="mt-20 cursor-pointer transition hover:opacity-90 active:scale-98"
       >
-        <Image src="/icons/kakao-login.svg" alt="kakao login" width={300} height={300} />
+        <Image src="/icons/kakao-login.svg" alt="kakao login" width={300} height={300} priority />
       </div>
     </main>
   );
