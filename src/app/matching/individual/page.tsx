@@ -26,7 +26,7 @@ export default function IndividualMatchingPage() {
   useEffect(() => {
     if (!data) return;
 
-    const code = data.code as string;
+    const code = data.code;
 
     if (code === 'TUNING_SUCCESS') {
       toast.dismiss();

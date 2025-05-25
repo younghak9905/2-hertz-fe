@@ -1,3 +1,4 @@
+import { TuningResponseCode } from '@/constants/matchingType';
 import axiosInstance from '@lib/axios';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -31,7 +32,7 @@ export interface TuningUser {
 }
 
 export interface GetTuningUserResponse {
-  code: 'TUNING_SUCCESS';
+  code: TuningResponseCode;
   message: string;
   data: TuningUser;
 }

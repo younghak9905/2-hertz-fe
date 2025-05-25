@@ -1,0 +1,5 @@
+export type TuningResponseCode =
+  | 'TUNING_SUCCESS'
+  | 'NO_TUNING_CANDIDATE'
+  | 'USER_INTERESTS_NOT_SELECTED'
+  | 'AI_SERVER_ERROR';
