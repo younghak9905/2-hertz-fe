@@ -8,6 +8,13 @@ import { FaRegUserCircle } from 'react-icons/fa';
 
 const hiddenRoutes = ['/login', '/onboarding', '/not-found'];
 
+const navItems = [
+  { path: '/home', label: '홈', icon: HiOutlineHome },
+  { path: '/report', label: '리포트', icon: TbReportSearch },
+  { path: '/chat', label: '채널', icon: PiChatCircleDotsBold },
+  { path: '/mypage', label: '마이페이지', icon: FaRegUserCircle },
+];
+
 export default function BottomNavigationBar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -16,35 +23,25 @@ export default function BottomNavigationBar() {
   if (shouldHide) return null;
 
   return (
-    <nav className="fixed bottom-0 z-50 flex h-[3.5rem] w-full max-w-[430px] items-center justify-around border-t bg-white pb-[env(safe-area-inset-bottom)]">
-      <button
-        onClick={() => router.push('/home')}
-        className="flex flex-col items-center gap-1 text-xs"
-      >
-        <HiOutlineHome className="h-5 w-5" />
-        <p className="text-[0.7rem] font-medium">홈</p>
-      </button>
-      <button
-        onClick={() => router.push('/report')}
-        className="flex flex-col items-center gap-1 text-xs"
-      >
-        <TbReportSearch className="h-5 w-5" />
-        <p className="text-[0.7rem] font-medium">리포트</p>
-      </button>
-      <button
-        onClick={() => router.push('/chat')}
-        className="flex flex-col items-center gap-1 text-xs"
-      >
-        <PiChatCircleDotsBold className="h-[18px] w-[18px]" />
-        <p className="text-[0.7rem] font-medium">채널</p>
-      </button>
-      <button
-        onClick={() => router.push('/mypage')}
-        className="flex flex-col items-center gap-1 text-xs"
-      >
-        <FaRegUserCircle className="h-[18px] w-[18px]" />
-        <p className="text-[0.7rem] font-medium">마이페이지</p>
-      </button>
+    <nav className="fixed bottom-0 z-50 flex h-[3.5rem] w-full max-w-[430px] items-center justify-around bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-2px_10px_rgba(0,0,0,0.05)] before:absolute before:top-0 before:h-2 before:w-full before:bg-gradient-to-t before:from-white before:to-transparent">
+      {navItems.map(({ path, label, icon: Icon }) => {
+        const isActive = pathname === path;
+
+        return (
+          <button
+            key={path}
+            onClick={() => router.push(path)}
+            className={`flex flex-col items-center gap-1 text-xs transition-colors duration-200 ${
+              isActive ? 'font-semibold text-[var(--gray-400)]' : 'text-[var(--gray-300)]'
+            }`}
+          >
+            <Icon
+              className={`h-5 w-5 transition-transform duration-200 ${isActive ? 'scale-100' : 'scale-90'}`}
+            />
+            <p className="text-[0.7rem] font-semibold">{label}</p>
+          </button>
+        );
+      })}
     </nav>
   );
 }
