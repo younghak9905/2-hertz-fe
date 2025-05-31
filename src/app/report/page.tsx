@@ -8,7 +8,6 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
-import MaintenanceNotice from '@/components/common/MaintenanceNotice';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
@@ -45,51 +44,46 @@ const mockReportList = [
 ];
 
 export default function ReportPage() {
+  const [sortType, setSortType] = useState<'latest' | 'popular'>('latest');
+
+  const handleSortChange = (type: 'latest' | 'popular') => {
+    setSortType(type);
+  };
+
   return (
-    <>
+    <div className="bg-white px-8 py-4">
       <Header title="튜닝 리포트" showBackButton={false} showNotificationButton={true} />
-      <MaintenanceNotice />
-    </>
+
+      <div className="mt-2 flex items-center justify-between">
+        <p className="px-2 font-bold">
+          {dayjs(mockReportList[0].createdDate).format('YYYY년 MM월 DD일')}
+        </p>
+
+        <div className="flex items-center gap-3 px-2">
+          <button
+            onClick={() => handleSortChange(sortType === 'latest' ? 'popular' : 'latest')}
+            className="flex gap-1"
+          >
+            <p className="text-sm font-medium">{sortType === 'latest' ? '최신순' : '인기순'}</p>
+            <TbArrowsSort />
+          </button>
+
+          <FiShare className="text-sm" />
+        </div>
+      </div>
+
+      {mockReportList.map((report, idx) => (
+        <div className="mt-4 rounded-2xl border p-4" key={idx}>
+          <p className="text-sm font-bold">{report.title}</p>
+          <p
+            className="mt-4 text-sm leading-6"
+            dangerouslySetInnerHTML={{ __html: report.content }}
+          />
+        </div>
+      ))}
+      <div className="flex w-full justify-between">
+        <ReactionGroup />
+      </div>
+    </div>
   );
-  // const [sortType, setSortType] = useState<'latest' | 'popular'>('latest');
-
-  // const handleSortChange = (type: 'latest' | 'popular') => {
-  //   setSortType(type);
-  // };
-
-  // return (
-  //   <div className="bg-white px-8 py-4">
-  //     <Header title="튜닝 리포트" showBackButton={false} showNotificationButton={true} />
-
-  //     <div className="mt-2 flex items-center justify-between">
-  //       <p className="px-2 font-medium">
-  //         {' '}
-  //         {dayjs(mockReportList[0].createdDate).format('YYYY년 MM월 DD일')}
-  //       </p>
-
-  //       <div className="flex items-center gap-3 px-2">
-  //         <button onClick={() => handleSortChange('latest')} className="flex gap-1">
-  //           <p className="text-xs font-medium">최신순</p>
-  //           <TbArrowsSort />
-  //         </button>
-  //         <button onClick={() => handleSortChange('popular')} className="flex gap-1">
-  //           <p className="text-xs font-medium">인기순</p>
-  //           <TbArrowsSort />
-  //         </button>
-  //         <FiShare className="text-sm" />
-  //       </div>
-  //     </div>
-
-  //     {mockReportList.map((report, idx) => (
-  //       <div className="mt-4 rounded-2xl border p-4" key={idx}>
-  //         <p className="text-sm font-bold">{report.title}</p>
-  //         <p
-  //           className="mt-4 text-xs leading-5"
-  //           dangerouslySetInnerHTML={{ __html: report.content }}
-  //         />
-  //       </div>
-  //     ))}
-  //     <ReactionGroup />
-  //   </div>
-  // );
 }
