@@ -55,7 +55,7 @@ export default function ReportPage() {
       <Header title="튜닝 리포트" showBackButton={false} showNotificationButton={true} />
 
       <div className="mt-2 flex items-center justify-between">
-        <p className="px-2 font-medium">
+        <p className="px-2 font-bold">
           {dayjs(mockReportList[0].createdDate).format('YYYY년 MM월 DD일')}
         </p>
 
@@ -64,7 +64,7 @@ export default function ReportPage() {
             onClick={() => handleSortChange(sortType === 'latest' ? 'popular' : 'latest')}
             className="flex gap-1"
           >
-            <p className="text-xs font-medium">{sortType === 'latest' ? '최신순' : '인기순'}</p>
+            <p className="text-sm font-medium">{sortType === 'latest' ? '최신순' : '인기순'}</p>
             <TbArrowsSort />
           </button>
 
@@ -76,12 +76,14 @@ export default function ReportPage() {
         <div className="mt-4 rounded-2xl border p-4" key={idx}>
           <p className="text-sm font-bold">{report.title}</p>
           <p
-            className="mt-4 text-xs leading-5"
+            className="mt-4 text-sm leading-6"
             dangerouslySetInnerHTML={{ __html: report.content }}
           />
         </div>
       ))}
-      <ReactionGroup />
+      <div className="flex w-full justify-between">
+        <ReactionGroup />
+      </div>
     </div>
   );
 }
