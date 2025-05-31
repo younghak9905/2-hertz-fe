@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import ChatRoomNotFoundPage from '@/components/chat/ChatRoomNotFound.tsx';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function ChannelsIndividualPage() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function ChannelsIndividualPage() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (isLoading) return <p className="justify-center text-center text-sm">불러오는 중...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError || !data || data.pages[0].code === 'NO_CHANNEL_ROOM') {
     return <ChatRoomNotFoundPage />;
   }
