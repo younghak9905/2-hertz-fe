@@ -62,13 +62,13 @@ export default function ReportPage() {
         <div className="flex items-center gap-3 px-2">
           <button
             onClick={() => handleSortChange(sortType === 'latest' ? 'popular' : 'latest')}
-            className="flex gap-1"
+            className="flex cursor-pointer items-center gap-1"
           >
             <p className="text-sm font-medium">{sortType === 'latest' ? '최신순' : '인기순'}</p>
             <TbArrowsSort />
           </button>
 
-          <FiShare className="text-sm" />
+          <FiShare className="cursor-pointer text-sm" />
         </div>
       </div>
 
