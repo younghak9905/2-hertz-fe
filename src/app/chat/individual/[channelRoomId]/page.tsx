@@ -16,7 +16,6 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { formatKoreanDate } from '@/utils/format';
-import UnavailableChannelBanner from '@/components/chat/UnavailableChannelBanner';
 
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
