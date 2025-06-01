@@ -52,7 +52,7 @@ export default function ChannelsIndividualPage() {
     <>
       <Header title="채팅" showBackButton={false} showNotificationButton={true} />
       <div className="mt-2 space-y-6 overflow-hidden px-4">
-        {rooms.map((room, index) => (
+        {rooms.map((room) => (
           <button
             key={room.channelRoomId}
             onClick={() => {
