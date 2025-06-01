@@ -8,6 +8,8 @@ import Header from '@/components/layout/Header';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import ChatRoomNotFoundPage from '@/components/chat/ChatRoomNotFound.tsx';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function ChannelsIndividualPage() {
   const router = useRouter();
@@ -39,14 +41,9 @@ export default function ChannelsIndividualPage() {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (isLoading) return <p className="justify-center text-center text-sm">불러오는 중...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError || !data || data.pages[0].code === 'NO_CHANNEL_ROOM') {
-    return (
-      <p className="justify-center text-center text-sm leading-6">
-        참여 중인 채널이 없습니다.
-        <br /> 매칭을 진행해주세요 :)
-      </p>
-    );
+    return <ChatRoomNotFoundPage />;
   }
 
   const rooms = data.pages.flatMap((page) => page.data?.list ?? []) ?? [];

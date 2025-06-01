@@ -62,7 +62,7 @@ export default function AlarmPage() {
                 <div
                   key={index}
                   onClick={() => router.push('/report')}
-                  className="cursor-pointer rounded-xl border-b bg-white px-4 py-4 transition hover:bg-gray-50"
+                  className="cursor-pointer rounded-xl border-b bg-white px-4 py-2 transition hover:bg-gray-50"
                 >
                   <div className="mt-1 mb-1 flex items-center justify-between">
                     <span className="flex-shrink-0 rounded-2xl bg-[var(--light-blue)] px-2.5 py-1 text-xs font-semibold text-[var(--dark-blue)]">
