@@ -35,7 +35,7 @@ export default function ChannelsPage() {
           </button>
         </div>
 
-        <section className="mt-4">
+        <section key={selectedTab} className="animate-fade-slide-in mt-4">
           {selectedTab === 'individual' ? <ChannelsIndividualPage /> : <ChannelsGroupPage />}
         </section>
       </main>
