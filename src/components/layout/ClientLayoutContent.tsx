@@ -3,7 +3,9 @@
 import { usePathname } from 'next/navigation';
 import BottomNavigationBar from '@/components/layout/BottomNavigationBar';
 import Header from '@/components/layout/Header';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useSSE } from '@/hooks/useSSE';
+import toast from 'react-hot-toast';
 
 const hiddenRoutes = ['/login', '/onboarding', '/not-found'];
 
@@ -15,6 +17,21 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
   const [mounted, setMounted] = useState(false);
   const [padding, setPadding] = useState({ top: 0, bottom: 0 });
   const [isHiddenUI, setIsHiddenUI] = useState(false);
+
+  const sseHandlers = useMemo(
+    () => ({
+      'signal-matching-conversion': (data: unknown) => {
+        const { partnerNickname } = data as { partnerNickname: string };
+        toast.success(`🎉 ${partnerNickname}님과 매칭이 가능해졌어요!`);
+      },
+    }),
+    [],
+  );
+
+  useSSE({
+    url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/sse/subscribe`,
+    handlers: sseHandlers,
+  });
 
   useEffect(() => {
     setMounted(true);
