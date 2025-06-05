@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { EventSourcePolyfill } from 'event-source-polyfill';
 
 type SSEEventHandlers = {
   [eventName: string]: (data: unknown) => void;
@@ -9,25 +8,7 @@ type SSEEventHandlers = {
 
 export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandlers }) => {
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
-      console.warn('No access token found for SSE connection.');
-      return;
-    }
-
-    const eventSource = new EventSourcePolyfill(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      fetch: (input, init = {}) => {
-        const headers = new Headers(init.headers);
-        headers.set('Authorization', `Bearer ${accessToken}`);
-
-        return fetch(input, {
-          ...init,
-          headers,
-        });
-      },
+    const eventSource = new EventSource(url, {
       withCredentials: true,
     });
 
