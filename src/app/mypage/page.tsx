@@ -7,11 +7,33 @@ import UserProfileCard from '@/components/mypage/UserProfileCard';
 import { useConfirmModalStore } from '@/stores/modal/useConfirmModalStore';
 import { getUserInfo, GetUserInfoResponse } from '@/lib/api/user';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { deleteLogout } from '@/lib/api/auth';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function MyPage() {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState<GetUserInfoResponse['data'] | null>(null);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
+    setIsLogoutModalOpen(false);
+
+    try {
+      const response = await deleteLogout();
+
+      if (response.code === 'LOGOUT_SUCCESS') {
+        localStorage.removeItem('accessToken');
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('deleteLogout 오류: ', error);
+      toast.error('로그아웃 처리 중 문제가 발생했습니다.');
+    } finally {
+    }
+  };
+
+  const cancelLogout = () => {
     setIsLogoutModalOpen(false);
   };
 
@@ -75,10 +97,10 @@ export default function MyPage() {
                 cancelText: '취소',
                 variant: 'quit',
                 onConfirm: handleLogout,
-                onCancel: () => {},
+                onCancel: cancelLogout,
               })
             }
-            className="border-b-1 border-[var(--gray-400)] text-xs font-semibold text-[var(--gray-400)]"
+            className="mb-10 border-b-1 border-[var(--gray-400)] text-xs font-semibold text-[var(--gray-400)]"
           >
             로그아웃
           </button>
