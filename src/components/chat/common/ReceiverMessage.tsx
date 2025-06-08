@@ -2,12 +2,14 @@
 
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface ReceiverMessageProps {
   nickname: string;
   profileImage: string;
   contents: string;
   sentAt: string;
+  partnerId: Number;
 }
 
 export default function ReceiverMessage({
@@ -15,21 +17,28 @@ export default function ReceiverMessage({
   profileImage,
   contents,
   sentAt,
+  partnerId,
 }: ReceiverMessageProps) {
+  const router = useRouter();
+
   const getSafeImageSrc = (src: string) => {
     if (!src || src.trim() === '') return '/images/default-profile.png';
-
     if (src.startsWith('http') || src.startsWith('/')) return src;
 
     const cleaned = src.replace(/^(\.\/|\.\.\/)+/, '');
 
     return `/${cleaned}`;
   };
+
+  const handleProfileClick = () => {
+    router.push(`/profile/${partnerId}`);
+  };
+
   return (
     <div className="flex items-start justify-start gap-1.5">
       <div className="mr-2 flex flex-col items-center">
         <div className="relative h-10 w-10 rounded-full bg-gradient-to-tr from-[#7BA1FF] via-[#7BA1FF] to-transparent p-[2px]">
-          <div className="h-full w-full rounded-full bg-white">
+          <div onClick={handleProfileClick} className="h-full w-full rounded-full bg-white">
             <Image
               src={getSafeImageSrc(profileImage) || '/images/default-profile.png'}
               width={36}
