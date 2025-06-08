@@ -24,6 +24,8 @@ export default function MyPage() {
 
       if (response.code === 'LOGOUT_SUCCESS') {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('hasLoggedIn');
         router.push('/login');
       }
     } catch (error) {

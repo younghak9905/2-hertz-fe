@@ -29,6 +29,7 @@ export default function OnboardingInformationWrapper() {
         const response = await postKakaoLogin({ code, state });
         if (response) {
           localStorage.setItem('userId', response.data.userId);
+          localStorage.setItem('hasLoggedIn', 'true');
         }
 
         if (response.code === 'USER_NOT_REGISTERED') {

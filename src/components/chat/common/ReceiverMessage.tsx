@@ -9,7 +9,7 @@ interface ReceiverMessageProps {
   profileImage: string;
   contents: string;
   sentAt: string;
-  partnerId: Number;
+  partnerId: number;
 }
 
 export default function ReceiverMessage({
