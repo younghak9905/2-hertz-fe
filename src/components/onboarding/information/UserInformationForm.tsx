@@ -44,6 +44,10 @@ export default function UserInformationForm({ providerId }: UserInformationFormP
   const handleSubmit = methods.handleSubmit(async (data) => {
     try {
       const res = await postRegisterUserInfo(data);
+      if (res) {
+        localStorage.setItem('userId', res.data.userId);
+      }
+
       if (res.code === 'PROFILE_SAVED_SUCCESSFULLY') {
         localStorage.setItem('accessToken', res.data.accessToken);
         router.push('/onboarding/interests');
