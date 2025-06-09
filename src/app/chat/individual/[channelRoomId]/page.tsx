@@ -118,6 +118,7 @@ export default function ChatsIndividualPage() {
                     profileImage={partner?.partnerProfileImage ?? '/images/default-profile.png'}
                     contents={msg.messageContents}
                     sentAt={msg.messageSendAt}
+                    partnerId={partner?.partnerId ?? null}
                   />
                 ) : (
                   <SenderMessage contents={msg.messageContents} sentAt={msg.messageSendAt} />
