@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+export const noop = () => {};
 
 interface ConfirmModalState {
   isOpen: boolean;
@@ -21,8 +22,8 @@ export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
   imageSrc: undefined,
   confirmText: '네',
   cancelText: '아니요',
-  onConfirm: () => {},
-  onCancel: () => {},
+  onConfirm: noop,
+  onCancel: noop,
   variant: 'confirm',
   openModal: (props) =>
     set({
@@ -38,7 +39,7 @@ export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
       confirmText: '네',
       cancelText: '아니요',
       variant: 'confirm',
-      onConfirm: () => {},
-      onCancel: () => {},
+      onConfirm: noop,
+      onCancel: noop,
     }),
 }));
