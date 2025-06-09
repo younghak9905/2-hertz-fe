@@ -16,8 +16,8 @@ interface ConfirmModalState {
 
 export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
   isOpen: false,
-  title: '',
-  description: '',
+  title: null,
+  description: undefined,
   imageSrc: undefined,
   confirmText: '네',
   cancelText: '아니요',
@@ -32,8 +32,8 @@ export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
   closeModal: () =>
     set({
       isOpen: false,
-      title: '',
-      description: '',
+      title: null,
+      description: undefined,
       imageSrc: undefined,
       confirmText: '네',
       cancelText: '아니요',
