@@ -119,9 +119,14 @@ export default function ChatsIndividualPage() {
                     contents={msg.messageContents}
                     sentAt={msg.messageSendAt}
                     partnerId={partner?.partnerId ?? null}
+                    relationType={partner?.relationType ?? null}
                   />
                 ) : (
-                  <SenderMessage contents={msg.messageContents} sentAt={msg.messageSendAt} />
+                  <SenderMessage
+                    contents={msg.messageContents}
+                    sentAt={msg.messageSendAt}
+                    relationType={partner?.relationType ?? null}
+                  />
                 )}
               </div>
             );

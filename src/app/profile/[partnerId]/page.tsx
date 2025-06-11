@@ -1,25 +1,25 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Header from '@/components/layout/Header';
 import KeywordTagGroup from '@/components/matching/individual/KeywordTagGroup';
 import UserProfileCard from '@/components/mypage/UserProfileCard';
 import { getUserInfo, GetUserInfoResponse } from '@/lib/api/user';
-import { useEffect, useState } from 'react';
 
 export default function ProfileDetailPage() {
+  const { partnerId } = useParams() as { partnerId: string };
   const [userInfo, setUserInfo] = useState<GetUserInfoResponse['data'] | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userId = localStorage.getItem('userId');
-
-        if (!userId) {
-          console.error('userId가 없습니다.');
+        if (!partnerId) {
+          console.error('partnerId가 없습니다.');
           return;
         }
-        const response = await getUserInfo(userId);
+        const response = await getUserInfo(partnerId);
         setUserInfo(response.data);
       } catch (error) {
         console.error('유저 정보 불러오기 실패: ', error);
@@ -27,7 +27,7 @@ export default function ProfileDetailPage() {
     };
 
     fetchUserInfo();
-  }, []);
+  }, [partnerId]);
 
   if (!userInfo) {
     return <LoadingSpinner />;
