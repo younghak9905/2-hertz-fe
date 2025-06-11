@@ -24,7 +24,7 @@ export default function ChatHeader({ title, onLeave, onToggleDetail }: ChatHeade
         className="flex max-w-[220px] flex-1 cursor-pointer items-center justify-center gap-2 overflow-hidden text-lg font-bold whitespace-nowrap text-black"
       >
         <span className="overflow-hidden text-ellipsis">{title}</span>
-        <FaAngleDown className="ml-1 flex-shrink-0 text-[clamp(1rem,2vw,0.8rem)]" />
+        {/* <FaAngleDown className="ml-1 flex-shrink-0 text-[clamp(1rem,2vw,0.8rem)]" /> */}
       </div>
 
       <button onClick={onLeave} className="flex w-8 items-center justify-center p-1">
