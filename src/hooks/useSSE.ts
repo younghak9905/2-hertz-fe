@@ -10,6 +10,7 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isConnectingRef = useRef(false);
   const handlersRef = useRef(handlers);
+  const listenerMapRef = useRef<Record<string, (e: MessageEvent) => void>>({});
 
   useEffect(() => {
     handlersRef.current = handlers;
@@ -19,6 +20,8 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
     let eventSource: EventSource | null = null;
 
     const connect = () => {
+      listenerMapRef.current = {};
+
       if (isConnectingRef.current) return;
       isConnectingRef.current = true;
 
@@ -31,14 +34,16 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
       };
 
       Object.entries(handlersRef.current).forEach(([event, callback]) => {
-        eventSource!.addEventListener(event, (e: MessageEvent) => {
+        const listener = (e: MessageEvent) => {
           try {
             const parsed = JSON.parse(e.data);
             callback(parsed);
           } catch (err) {
             console.error(`Error parsing SSE event '${event}':`, err);
           }
-        });
+        };
+        listenerMapRef.current[event] = listener;
+        eventSource!.addEventListener(event, listener);
       });
 
       eventSource.onerror = (err: Event) => {
@@ -56,7 +61,12 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
     connect();
 
     return () => {
-      eventSource?.close();
+      if (eventSource) {
+        Object.entries(listenerMapRef.current).forEach(([event, listener]) => {
+          eventSource!.removeEventListener(event, listener);
+        });
+        eventSource?.close();
+      }
       if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
     };
   }, [url]);
