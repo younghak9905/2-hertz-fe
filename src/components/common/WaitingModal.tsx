@@ -2,7 +2,8 @@ import { useWaitingModalStore } from '@/stores/modal/useWaitingModalStore';
 import { FadeLoader } from 'react-spinners';
 
 export default function WaitingModal() {
-  const { isOpen, partnerNickname } = useWaitingModalStore();
+  const isOpen = useWaitingModalStore((state) => state.isOpen);
+  const partnerNickname = useWaitingModalStore((state) => state.partnerNickname);
 
   return isOpen ? (
     <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/40">
