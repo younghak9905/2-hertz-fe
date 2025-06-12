@@ -38,22 +38,24 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
         toast.success(`🎉 ${partnerNickname}님과 매칭이 가능해졌어요!`);
       },
       'signal-matching-conversion-in-room': (data: unknown) => {
-        const { partnerNickname, channelRoomId, hasResponeded, partnerHasResponded } = data as {
+        const { partnerNickname, channelRoomId, hasResponded, partnerHasResponded } = data as {
           partnerNickname: string;
           channelRoomId: number;
-          hasResponeded: boolean;
+          hasResponded: boolean;
           partnerHasResponded: boolean;
         };
 
         if (
-          hasResponeded ||
+          hasResponded ||
           partnerHasResponded ||
           currentWaitingChannelIdRef.current === channelRoomId
         )
           return;
 
-        lastOpenedRoomIdRef.current = channelRoomId;
-        lastOpenedPartnerRef.current = partnerNickname;
+        if (partnerHasResponded) {
+          lastOpenedRoomIdRef.current = channelRoomId;
+          lastOpenedPartnerRef.current = partnerNickname;
+        }
 
         useConfirmModalStore.getState().openModal({
           title: (
@@ -78,34 +80,40 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
             handleReject(channelRoomId);
             closeConfirmModal();
             closeWaitingModal();
-            toast('매칭이 실패하였습니다', { icon: '🥺' });
             lastOpenedRoomIdRef.current = null;
             lastOpenedPartnerRef.current = null;
           },
         });
       },
       'matching-success': (data: unknown) => {
-        currentWaitingChannelIdRef.current = null;
-        closeWaitingModal();
-
-        const { partnerNickname } = data as {
+        const { channelRoomId, partnerNickname } = data as {
           channelRoomId: number;
           partnerId: number;
           partnerProfileImage: string;
           partnerNickname: string;
         };
+        if (currentWaitingChannelIdRef.current !== channelRoomId) return;
+
+        currentWaitingChannelIdRef.current = null;
+        closeWaitingModal();
+
         toast(`${partnerNickname}님과 매칭을 성공했어요!`, { icon: '🥳' });
       },
       'matching-rejection': (data: unknown) => {
-        currentWaitingChannelIdRef.current = null;
-        closeWaitingModal();
-
-        const { partnerNickname } = data as {
+        const { channelRoomId, partnerNickname } = data as {
           channelRoomId: number;
           partnerId: number;
           partnerProfileImage: string;
           partnerNickname: string;
         };
+
+        if (currentWaitingChannelIdRef.current !== channelRoomId) return;
+        if (currentWaitingChannelIdRef.current === channelRoomId) {
+          currentWaitingChannelIdRef.current = null;
+          closeWaitingModal();
+          closeConfirmModal();
+        }
+
         toast(`${partnerNickname}님과 매칭을 실패했어요`, { icon: '🥺' });
       },
     }),
@@ -125,28 +133,32 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
 
           break;
         case 'MATCH_PENDING':
-          toast('상대방의 응답을 기다리는 중입니다.');
+          toast('상대방의 응답을 기다리는 중입니다');
           closeConfirmModal();
           openWaitingModal(partnerNickname);
           currentWaitingChannelIdRef.current = channelRoomId;
           break;
         case 'MATCH_FAILED':
-          toast.error('상대방이 매칭을 거절했습니다.');
+          toast.error('상대방이 매칭을 거절했습니다');
           closeConfirmModal();
           closeWaitingModal();
           break;
         case 'USER_DEACTIVATED':
-          toast.error('상대방이 탈퇴한 사용자입니다.');
+          toast.error('상대방이 탈퇴한 사용자입니다');
           closeWaitingModal();
           closeConfirmModal();
           break;
+        case 'USER_DEACTIVATED':
+          toast.error('상대방이 탈퇴한 사용자입니다');
+          closeWaitingModal();
+          closeConfirmModal();
         default:
-          toast.error('예상치 못한 응답입니다.');
+          toast.error('예상치 못한 응답입니다');
           closeWaitingModal();
           closeConfirmModal();
       }
     } catch (e) {
-      toast.error('매칭 수락 중 오류가 발생했습니다.');
+      toast.error('매칭 수락 중 오류가 발생했습니다');
       closeWaitingModal();
       closeConfirmModal();
     }
@@ -157,16 +169,16 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
       const res = await postMatchingReject({ channelRoomId });
 
       if (res.code === 'MATCH_REJECTION_SUCCESS') {
-        toast.success('매칭을 거절했습니다.');
+        toast.success('매칭을 거절했습니다');
         closeWaitingModal();
         closeConfirmModal();
       } else {
-        toast.error('예상치 못한 응답입니다.');
+        toast.error('예상치 못한 응답입니다');
         closeWaitingModal();
         closeConfirmModal();
       }
     } catch (e) {
-      toast.error('매칭 거절 중 오류가 발생했습니다.');
+      toast.error('매칭 거절 중 오류가 발생했습니다');
       closeWaitingModal();
       closeConfirmModal();
     }
