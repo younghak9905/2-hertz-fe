@@ -174,6 +174,8 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
       {!isHiddenUI && <BottomNavigationBar />}
       <ConfirmModal />
       <WaitingModal />
+      <ConfirmModal />
+      <WaitingModal />
     </div>
   );
 }
