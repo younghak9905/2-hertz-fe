@@ -7,7 +7,7 @@ export interface ChannelRoom {
   lastMessage: string;
   lastMessageTime: string;
   isRead: boolean;
-  relationType: 'SIGNAL' | 'MATCHING';
+  relationType: 'SIGNAL' | 'MATCHING' | 'UNMATCHED';
 }
 
 export interface GetChannelRoomListResponse {
@@ -50,7 +50,7 @@ export interface ChannelRoomDetailResponse {
     partnerId: number;
     partnerProfileImage: string;
     partnerNickname: string;
-    relationType: 'SIGNAL' | 'MATCHING';
+    relationType: 'SIGNAL' | 'MATCHING' | 'UNMATCHED';
     messages: Messages;
     pageable: {
       pageNumber: number;
