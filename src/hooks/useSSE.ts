@@ -9,6 +9,11 @@ type SSEEventHandlers = {
 export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandlers }) => {
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isConnectingRef = useRef(false);
+  const handlersRef = useRef(handlers);
+
+  useEffect(() => {
+    handlersRef.current = handlers;
+  }, [handlers]);
 
   useEffect(() => {
     let eventSource: EventSource | null = null;
@@ -25,7 +30,7 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
         isConnectingRef.current = false;
       };
 
-      Object.entries(handlers).forEach(([event, callback]) => {
+      Object.entries(handlersRef.current).forEach(([event, callback]) => {
         eventSource!.addEventListener(event, (e: MessageEvent) => {
           try {
             const parsed = JSON.parse(e.data);
@@ -54,5 +59,5 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
       eventSource?.close();
       if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
     };
-  }, [url, handlers]);
+  }, [url]);
 };
