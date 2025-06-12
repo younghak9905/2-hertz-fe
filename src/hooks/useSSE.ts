@@ -45,7 +45,7 @@ export const useSSE = ({ url, handlers }: { url: string; handlers: SSEEventHandl
         console.error('SSE connection error:', err);
 
         eventSource?.close();
-
+        isConnectingRef.current = false;
         retryTimeoutRef.current = setTimeout(() => {
           console.info('🔄 SSE 재연결 시도...');
           connect();
