@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+export const noop = () => {};
 
 interface ConfirmModalState {
   isOpen: boolean;
@@ -16,13 +17,13 @@ interface ConfirmModalState {
 
 export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
   isOpen: false,
-  title: '',
-  description: '',
+  title: null,
+  description: undefined,
   imageSrc: undefined,
   confirmText: '네',
   cancelText: '아니요',
-  onConfirm: () => {},
-  onCancel: () => {},
+  onConfirm: noop,
+  onCancel: noop,
   variant: 'confirm',
   openModal: (props) =>
     set({
@@ -32,13 +33,13 @@ export const useConfirmModalStore = create<ConfirmModalState>((set) => ({
   closeModal: () =>
     set({
       isOpen: false,
-      title: '',
-      description: '',
+      title: null,
+      description: undefined,
       imageSrc: undefined,
       confirmText: '네',
       cancelText: '아니요',
       variant: 'confirm',
-      onConfirm: () => {},
-      onCancel: () => {},
+      onConfirm: noop,
+      onCancel: noop,
     }),
 }));
