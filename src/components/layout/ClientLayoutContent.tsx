@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import BottomNavigationBar from '@/components/layout/BottomNavigationBar';
 import Header from '@/components/layout/Header';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useSSE } from '@/hooks/useSSE';
 import toast from 'react-hot-toast';
 import { useConfirmModalStore } from '@/stores/modal/useConfirmModalStore';
@@ -13,7 +13,6 @@ import { useWaitingModalStore } from '@/stores/modal/useWaitingModalStore';
 import { postMatchingAccept, postMatchingReject } from '@/lib/api/matching';
 
 const hiddenRoutes = ['/login', '/onboarding', '/not-found'];
-
 const HEADER_HEIGHT = 56;
 const BOTTOM_NAV_HEIGHT = 56;
 
@@ -25,6 +24,9 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
   const closeConfirmModal = useConfirmModalStore((state) => state.closeModal);
   const closeWaitingModal = useWaitingModalStore((state) => state.closeModal);
   const openWaitingModal = useWaitingModalStore((state) => state.openModal);
+  const lastOpenedRoomIdRef = useRef<number | null>(null);
+  const currentWaitingChannelIdRef = useRef<number | null>(null);
+  const lastOpenedPartnerRef = useRef<string | null>(null);
 
   const sseHandlers = useMemo(
     () => ({
@@ -43,7 +45,15 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
           partnerHasResponded: boolean;
         };
 
-        if (hasResponeded || partnerHasResponded) return;
+        if (
+          hasResponeded ||
+          partnerHasResponded ||
+          currentWaitingChannelIdRef.current === channelRoomId
+        )
+          return;
+
+        lastOpenedRoomIdRef.current = channelRoomId;
+        lastOpenedPartnerRef.current = partnerNickname;
 
         useConfirmModalStore.getState().openModal({
           title: (
@@ -59,16 +69,25 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
           variant: 'confirm',
           onConfirm: () => {
             handleAccept(channelRoomId, partnerNickname);
-            useConfirmModalStore.getState().closeModal();
+            closeConfirmModal();
+            closeWaitingModal();
+            // lastOpenedRoomIdRef.current = null;
+            lastOpenedPartnerRef.current = null;
           },
           onCancel: () => {
             handleReject(channelRoomId);
-            useConfirmModalStore.getState().closeModal();
+            closeConfirmModal();
+            closeWaitingModal();
             toast('매칭이 실패하였습니다', { icon: '🥺' });
+            lastOpenedRoomIdRef.current = null;
+            lastOpenedPartnerRef.current = null;
           },
         });
       },
       'matching-success': (data: unknown) => {
+        currentWaitingChannelIdRef.current = null;
+        closeWaitingModal();
+
         const { partnerNickname } = data as {
           channelRoomId: number;
           partnerId: number;
@@ -78,6 +97,9 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
         toast(`${partnerNickname}님과 매칭을 성공했어요!`, { icon: '🥳' });
       },
       'matching-rejection': (data: unknown) => {
+        currentWaitingChannelIdRef.current = null;
+        closeWaitingModal();
+
         const { partnerNickname } = data as {
           channelRoomId: number;
           partnerId: number;
@@ -106,6 +128,7 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
           toast('상대방의 응답을 기다리는 중입니다.');
           closeConfirmModal();
           openWaitingModal(partnerNickname);
+          currentWaitingChannelIdRef.current = channelRoomId;
           break;
         case 'MATCH_FAILED':
           toast.error('상대방이 매칭을 거절했습니다.');
@@ -114,12 +137,18 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
           break;
         case 'USER_DEACTIVATED':
           toast.error('상대방이 탈퇴한 사용자입니다.');
+          closeWaitingModal();
+          closeConfirmModal();
           break;
         default:
           toast.error('예상치 못한 응답입니다.');
+          closeWaitingModal();
+          closeConfirmModal();
       }
     } catch (e) {
       toast.error('매칭 수락 중 오류가 발생했습니다.');
+      closeWaitingModal();
+      closeConfirmModal();
     }
   };
 
@@ -129,11 +158,17 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
 
       if (res.code === 'MATCH_REJECTION_SUCCESS') {
         toast.success('매칭을 거절했습니다.');
+        closeWaitingModal();
+        closeConfirmModal();
       } else {
         toast.error('예상치 못한 응답입니다.');
+        closeWaitingModal();
+        closeConfirmModal();
       }
     } catch (e) {
       toast.error('매칭 거절 중 오류가 발생했습니다.');
+      closeWaitingModal();
+      closeConfirmModal();
     }
   };
 
@@ -172,10 +207,8 @@ export default function ClientLayoutContent({ children }: { children: React.Reac
         {children}
       </div>
       {!isHiddenUI && <BottomNavigationBar />}
-      <ConfirmModal />
       <WaitingModal />
       <ConfirmModal />
-      <WaitingModal />
     </div>
   );
 }
