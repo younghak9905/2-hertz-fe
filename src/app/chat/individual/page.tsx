@@ -8,8 +8,8 @@ import Header from '@/components/layout/Header';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import ChatRoomNotFoundPage from '@/components/chat/ChatRoomNotFound.tsx';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import ChatRoomNotFoundPage from '@/components/chat/ChatRoomNotFound';
 
 export default function ChannelsIndividualPage() {
   const router = useRouter();
