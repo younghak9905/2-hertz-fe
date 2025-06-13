@@ -39,16 +39,14 @@ export default function ReportPage() {
         </p>
         <div className="flex items-center gap-3 px-2">
           <button onClick={handleSortChange} className="flex items-center gap-1">
-            {reports.length
-              ? 0 && (
-                  <div>
-                    <p className="text-sm font-medium">
-                      {sortType === 'LATEST' ? '최신순' : '인기순'}
-                    </p>
-                    <TbArrowsSort />
-                  </div>
-                )
-              : []}
+            {reports.length > 0 ? (
+              <div>
+                <p className="text-sm font-medium">{sortType === 'LATEST' ? '최신순' : '인기순'}</p>
+                <TbArrowsSort />
+              </div>
+            ) : (
+              []
+            )}
           </button>
         </div>
       </div>
