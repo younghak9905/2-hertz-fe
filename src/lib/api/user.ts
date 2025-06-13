@@ -17,6 +17,16 @@ export interface GetUserInfoResponse {
       smoking: string;
       drinking: string;
     };
+    sameInterests: {
+      personality: string[];
+      preferredPeople: string[];
+      currentInterests: string[];
+      favoriteFoods: string[];
+      likedSports: string[];
+      pets: string[];
+      selfDevelopment: string[];
+      hobbies: string[];
+    };
     interests: {
       personality: string[];
       preferredPeople: string[];

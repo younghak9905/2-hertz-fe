@@ -47,7 +47,8 @@ export default function ProfileDetailPage() {
             />
             <KeywordTagGroup
               keywords={userInfo.keywords}
-              sameInterests={userInfo.interests}
+              normalInterests={userInfo.interests}
+              sameInterests={userInfo.sameInterests}
               nickname={userInfo.nickname}
             />
           </div>

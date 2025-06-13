@@ -70,7 +70,7 @@ export default function KeywordTag({ keywords, variant = 'default' }: KeywordTag
             className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${
               isCommon
                 ? 'border-[var(--blue)] bg-[var(--light-blue)] text-[var(--dark-blue)]'
-                : 'border-[var(--gray-200)] text-black'
+                : 'border-[var(--gray-200)] bg-white text-black'
             }`}
           >
             # {displayLabel}
