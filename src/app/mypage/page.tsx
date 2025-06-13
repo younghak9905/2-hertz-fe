@@ -81,6 +81,7 @@ export default function MyPage() {
               sameInterests={userInfo.sameInterests}
               normalInterests={userInfo.interests}
               nickname={userInfo.nickname}
+              relationType={userInfo.relationType}
             />
           </div>
         </div>

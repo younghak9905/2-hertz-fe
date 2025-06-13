@@ -14,6 +14,7 @@ interface KeywordTagGroupProps {
   sameInterests?: TuningSameInterests;
   normalInterests?: TuningNormalInterests;
   nickname: string;
+  relationType?: string;
 }
 
 export default function KeywordTagGroup({
@@ -21,10 +22,12 @@ export default function KeywordTagGroup({
   sameInterests,
   normalInterests,
   nickname,
+  relationType,
 }: KeywordTagGroupProps) {
   const pathname = usePathname();
   const isProfilePage = pathname.startsWith('/mypage') || pathname.startsWith('/profile');
   const isMyPage = pathname.startsWith('/mypage');
+  const shouldBlurKeyword = relationType !== 'MATCHING';
 
   // 사용자 키워드를 렌더링용 문자열 배열로 변환 ('preferredPeople': 'RELIABLE' → 'PREFERRED_PEOPLE_RELIABLE')
   const keywordList = Object.entries(keywords).map(
@@ -77,8 +80,18 @@ export default function KeywordTagGroup({
         []
       )}
       {normalInterestList.length > 0 ? (
-        <div>
-          <KeywordTag keywords={normalInterestList} variant="default" />
+        <div className="relative">
+          {!isMyPage && shouldBlurKeyword && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+              <div className="rounded-2xl border border-[var(--gray-400)] bg-white px-4 py-1 text-xs font-semibold text-[var(--gray-400)]">
+                매칭 관계가 되면 확인할 수 있어요
+              </div>
+            </div>
+          )}
+
+          <div className={!isMyPage && shouldBlurKeyword ? 'pointer-events-none blur-[3px]' : ''}>
+            <KeywordTag keywords={normalInterestList} variant="default" />
+          </div>
         </div>
       ) : (
         <p className="items-center justify-center text-sm font-light text-[var(--gray-300)]">

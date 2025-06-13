@@ -50,6 +50,7 @@ export default function ProfileDetailPage() {
               normalInterests={userInfo.interests}
               sameInterests={userInfo.sameInterests}
               nickname={userInfo.nickname}
+              relationType={userInfo.relationType}
             />
           </div>
         </div>

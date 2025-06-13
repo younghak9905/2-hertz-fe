@@ -62,7 +62,7 @@ export default function KeywordTag({ keywords, variant = 'default' }: KeywordTag
 
         const rawKeyword = keywordWithPrefix.split('_').slice(1).join('_');
         const isPreferredPeople = Object.keys(PreferredPeople).includes(rawKeyword);
-        const displayLabel = isPreferredPeople ? `👩🏻‍❤️‍👨🏻${label}` : label;
+        const displayLabel = isPreferredPeople ? `👩🏻‍❤️‍👨🏻 ${label}` : label;
 
         return (
           <div
