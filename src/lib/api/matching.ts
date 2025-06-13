@@ -21,6 +21,17 @@ export interface TuningSameInterests {
   hobbies: string[];
 }
 
+export interface TuningNormalInterests {
+  personality: string[];
+  preferredPeople: string[];
+  currentInterests: string[];
+  favoriteFoods: string[];
+  likedSports: string[];
+  pets: string[];
+  selfDevelopment: string[];
+  hobbies: string[];
+}
+
 export interface TuningUser {
   userId: number;
   profileImage: string;

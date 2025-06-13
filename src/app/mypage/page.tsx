@@ -78,8 +78,10 @@ export default function MyPage() {
             />
             <KeywordTagGroup
               keywords={userInfo.keywords}
-              sameInterests={userInfo.interests}
+              sameInterests={userInfo.sameInterests}
+              normalInterests={userInfo.interests}
               nickname={userInfo.nickname}
+              relationType={userInfo.relationType}
             />
           </div>
         </div>
