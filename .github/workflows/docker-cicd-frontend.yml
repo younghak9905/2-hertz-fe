@@ -290,6 +290,8 @@ jobs:
             terraform init -reconfigure
             
             terraform output -json > tf_outputs.json
+            echo "=== Raw Terraform Output ==="
+            cat tf_outputs.json
 
             BLUE_MAX=$(jq -r '.blue_instance_count_frontend.value.max' tf_outputs.json)
             GREEN_MAX=$(jq -r '.green_instance_count_frontend.value.max' tf_outputs.json)
