@@ -287,11 +287,13 @@ jobs:
         id: active
         working-directory: tf-code/terraform/gcp/environments/prod
         run: |
+            set -euo pipefail # 에러 발생 시 즉시 종료, 정의되지 않은 변수 사용 금지
+
             terraform init -reconfigure
-            
-            terraform output -json > tf_outputs.json
-            echo "=== Raw Terraform Output ==="
-            cat tf_outputs.json
+
+            # 셸의 리다이렉션이 더 확실하게 작동하도록 명령어를 명시적으로 묶어줍니다.
+            # 또한, 표준 에러 출력을 무시하여 파일에 경고 메시지 등이 기록되지 않도록 합니다.
+            (terraform output -json 2>/dev/null) > tf_outputs.json
 
             BLUE_MAX=$(jq -r '.blue_instance_count_frontend.value.max' tf_outputs.json)
             GREEN_MAX=$(jq -r '.green_instance_count_frontend.value.max' tf_outputs.json)
