@@ -17,7 +17,8 @@ on:
         default: "브랜치를 확인해주세요!"
         type: choice
         options:
-          - "브랜치를 확인해주세요!"
+          - main
+          - develop
 
 jobs:
   frontend-ci:
@@ -288,8 +289,10 @@ jobs:
         run: |
             terraform init -reconfigure
             
-            BLUE_MAX=$(terraform output -json | jq -r '.blue_instance_count_frontend.value.max')
-            GREEN_MAX=$(terraform output -json | jq -r '.green_instance_count_frontend.value.max')
+            terraform output -json > tf_outputs.json
+
+            BLUE_MAX=$(jq -r '.blue_instance_count_frontend.value.max' tf_outputs.json)
+            GREEN_MAX=$(jq -r '.green_instance_count_frontend.value.max' tf_outputs.json)
             if [ "$BLUE_MAX" = "0" ]; then
               echo "✅ Active deployment is GREEN"
               echo "active=green" >> $GITHUB_OUTPUT
