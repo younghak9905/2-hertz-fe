@@ -16,6 +16,7 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { formatKoreanDate } from '@/utils/format';
+import UnavailableChannelBanner from '@/components/chat/UnavailableChannelBanner';
 
 export default function ChatsIndividualPage() {
   const { channelRoomId } = useParams();
@@ -91,6 +92,8 @@ export default function ChatsIndividualPage() {
   if (isLoading)
     return <p className="flex items-center justify-center text-sm font-medium">로딩 중...</p>;
 
+  const isUnmatched = partner?.relationType === 'UNMATCHED';
+
   return (
     <>
       <main className="relative flex h-full w-full flex-col overflow-x-hidden px-6 pb-18">
@@ -118,9 +121,15 @@ export default function ChatsIndividualPage() {
                     profileImage={partner?.partnerProfileImage ?? '/images/default-profile.png'}
                     contents={msg.messageContents}
                     sentAt={msg.messageSendAt}
+                    partnerId={partner?.partnerId ?? null}
+                    relationType={partner?.relationType ?? null}
                   />
                 ) : (
-                  <SenderMessage contents={msg.messageContents} sentAt={msg.messageSendAt} />
+                  <SenderMessage
+                    contents={msg.messageContents}
+                    sentAt={msg.messageSendAt}
+                    relationType={partner?.relationType ?? null}
+                  />
                 )}
               </div>
             );
@@ -128,9 +137,20 @@ export default function ChatsIndividualPage() {
           <div ref={bottomRef} />
         </div>
       </main>
-      <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
-        <ChatSignalInputBox onSend={handleSend} />
-      </div>
+      {isUnmatched ? (
+        <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
+          <UnavailableChannelBanner />
+          <ChatSignalInputBox
+            onSend={handleSend}
+            disabled={true}
+            placeholder="더 이상 메세지를 보낼 수 없습니다"
+          />
+        </div>
+      ) : (
+        <div className="absolute bottom-14 w-full bg-white px-5 pt-2 pb-2">
+          <ChatSignalInputBox onSend={handleSend} placeholder="메세지를 입력해주세요" />
+        </div>
+      )}
     </>
   );
 }
