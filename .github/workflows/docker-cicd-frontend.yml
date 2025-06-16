@@ -298,6 +298,10 @@ jobs:
             
             BLUE_MAX=$(terraform output -json | jq -r '.blue_instance_count_frontend.value.max')
             GREEN_MAX=$(terraform output -json | jq -r '.green_instance_count_frontend.value.max')
+            
+            echo "BLUE_MAX: $BLUE_MAX"
+            echo "GREEN_MAX: $GREEN_MAX"
+
             if [ "$BLUE_MAX" = "0" ]; then
               echo "✅ Active deployment is GREEN"
               echo "active=green" >> $GITHUB_OUTPUT
@@ -404,6 +408,14 @@ jobs:
         if: env.ENV == 'PROD'
         working-directory: tf-code/terraform/gcp/environments/prod
         run: |
+
+          terraform init -reconfigure
+            
+            BLUE_MAX=$(terraform output -json | jq -r '.blue_instance_count_frontend.value.max')
+            GREEN_MAX=$(terraform output -json | jq -r '.green_instance_count_frontend.value.max')
+            echo "BLUE_MAX-before-half: $BLUE_MAX"
+            echo "GREEN_MAX-before-half: $GREEN_MAX"
+
           ACTIVE=${{ steps.active.outputs.active }}
           TARGET=${{ steps.color.outputs.target }}
           echo "{" > 02-shift-half.auto.tfvars.json
@@ -429,6 +441,7 @@ jobs:
             -target=module.frontend_tg \
             -target=module.frontend_asg_green \
             -target=module.frontend_asg_blue
+          
 
       - name: Scale Down Previous Environment
         if: env.ENV == 'PROD'
@@ -442,6 +455,12 @@ jobs:
             -target=module.frontend_tg \
             -target=module.frontend_asg_green \
             -target=module.frontend_asg_blue
+          
+          terraform init -reconfigure
+          BLUE_MAX=$(terraform output -json | jq -r '.blue_instance_count_frontend.value.max')
+          GREEN_MAX=$(terraform output -json | jq -r '.green_instance_count_frontend.value.max')
+          echo "BLUE_MAX-after-scale-down: $BLUE_MAX"
+          echo "GREEN_MAX-aftre-scale-down: $GREEN_MAX"
 
       - name: Notify Discord on Success
         if: success()
