@@ -343,7 +343,7 @@ jobs:
           echo "  \"traffic_weight_${TARGET}_frontend\": 0," >> 01-deployment.auto.tfvars.json
           echo "  \"docker_image_front_${TARGET}\": \"${{ env.IMAGE }}\"," >> 01-deployment.auto.tfvars.json
           echo "  \"${ACTIVE}_instance_count_frontend\": {\"min\": 1, \"max\": 2}," >> 01-deployment.auto.tfvars.json
-          echo "  \"${TARGET}_instance_count_frontend\": {\"min\": 1, \"max\": 2}," >> 01-deployment.auto.tfvars.json
+          echo "  \"${TARGET}_instance_count_frontend\": {\"min\": 1, \"max\": 2}" >> 01-deployment.auto.tfvars.json
           #echo "  \"traffic_weight_blue_backend\": ${BLUE_WEIGHT_BACKEND}," >> 01-deployment.auto.tfvars.json
           #echo "  \"traffic_weight_green_backend\": ${GREEN_WEIGHT_BACKEND}," >> 01-deployment.auto.tfvars.json
           #echo "  \"blue_instance_count_backend\": ${BLUE_COUNT_BACKEND}," >> 01-deployment.auto.tfvars.json
