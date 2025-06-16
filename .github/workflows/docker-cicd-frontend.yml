@@ -368,7 +368,7 @@ jobs:
         if: env.ENV == 'PROD'
         env:
           REGION: asia-east1
-          TARGET: ${{ steps.color.outputs.ACTIVE }}
+          TARGET: ${{ steps.color.outputs.TARGET }}
         run: |
           MIG_NAME="prod-frontend-${TARGET}-b"
           RETRY=10
