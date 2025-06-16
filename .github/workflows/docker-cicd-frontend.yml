@@ -406,7 +406,7 @@ jobs:
           echo "  \"traffic_weight_${ACTIVE}_frontend\": 50," >> 02-shift-half.auto.tfvars.json
           echo "  \"traffic_weight_${TARGET}_frontend\": 50" >> 02-shift-half.auto.tfvars.json
           echo "}" >> 02-shift-half.auto.tfvars.json
-          terraform apply -auto-approvet-target=module.frontend_tg
+          terraform apply -auto-approve-target=module.frontend_tg
 
       - name: Write tfvars for shift traffic (full)
         if: env.ENV == 'PROD'
@@ -418,7 +418,7 @@ jobs:
           echo "  \"traffic_weight_${ACTIVE}_frontend\": 0," >> 03-shift-full.auto.tfvars.json
           echo "  \"traffic_weight_${TARGET}_frontend\": 100" >> 03-shift-full.auto.tfvars.json
           echo "}" >> 03-shift-full.auto.tfvars.json
-          terraform apply -auto-approvet-target=module.frontend_tg
+          terraform apply -auto-approve-target=module.frontend_tg
 
       - name: Scale Down Previous Environment
         if: env.ENV == 'PROD'
@@ -428,7 +428,7 @@ jobs:
           echo "{" > 04-scale-down.auto.tfvars.json
           echo "  \"${ACTIVE}_instance_count_frontend\": {\"min\":0, \"max\":0}" >> 04-scale-down.auto.tfvars.json
           echo "}" >> 04-scale-down.auto.tfvars.json
-          terraform apply -auto-approvet-target=module.frontend_tg
+          terraform apply -auto-approve-target=module.frontend_tg
 
       - name: Notify Discord on Success
         if: success()
@@ -564,7 +564,7 @@ jobs:
           echo "  \"green_instance_count_backend\": ${GREEN_COUNT_BACKEND}" >> 999-rollback.auto.tfvars.json
           echo "}" >> 999-rollback.auto.tfvars.json
 
-          terraform apply -auto-approvet-target=module.frontend_tg
+          terraform apply -auto-approve-target=module.frontend_tg
 
       - name: Send success notification
         if: success() && env.ENV == 'PROD'
