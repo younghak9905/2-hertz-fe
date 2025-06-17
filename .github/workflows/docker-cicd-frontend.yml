@@ -78,7 +78,13 @@ jobs:
       - name: Generate image tags
         id: generate-tags
         run: |
-          BRANCH="${{ github.ref_name }}"
+
+          if [ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]; then
+            BRANCH="${{ github.event.inputs.env }}"
+              else
+            BRANCH="${{ github.ref_name }}"
+          fi
+         
           SANITIZED_BRANCH="${BRANCH//\//-}"
           SANITIZED_BRANCH=$(echo "$SANITIZED_BRANCH" | sed 's#[^a-zA-Z0-9_.-]#-#g')
           BRANCH="$SANITIZED_BRANCH"
