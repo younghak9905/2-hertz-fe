@@ -154,7 +154,7 @@ jobs:
   frontend-cd:
     name: frontend Terraform CD
     needs: frontend-ci
-    if: needs.frontend-ci.result == 'success'
+    if: needs.frontend-ci.result == 'success' 
     runs-on: ubuntu-latest
     env:
       BRANCH: ${{ needs.frontend-ci.outputs.BRANCH }}
@@ -195,7 +195,7 @@ jobs:
             echo "$VALUE" > "$2"
           }
 
-          BRANCH="${{ github.ref_name }}"
+          BRANCH="${{ env.BRANCH }}"
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           if [[ "$BRANCH" == "main" ]]; then
             echo "ENV=PROD" >> $GITHUB_ENV
