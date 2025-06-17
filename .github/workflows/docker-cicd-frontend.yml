@@ -551,7 +551,7 @@ jobs:
             echo "$VALUE" > "$2"
           }
 
-          BRANCH="${{ github.ref_name }}"
+          BRANCH="${{ env.BRANCH }}"
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           if [[ "$BRANCH" == "main" ]]; then
             echo "ENV=PROD" >> $GITHUB_ENV
