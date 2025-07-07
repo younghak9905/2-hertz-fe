@@ -90,7 +90,7 @@ jobs:
           SANITIZED_BRANCH=$(echo "$SANITIZED_BRANCH" | sed 's#[^a-zA-Z0-9_.-]#-#g')
           BRANCH="$SANITIZED_BRANCH"
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          IMAGE_TAG="${BRANCH}-${SHORT_SHA}"
+          IMAGE_TAG="k8s-${BRANCH}-${SHORT_SHA}"
 
           if [ "$BRANCH" = "main" ]; then
             ENV_TAG="k8s-main-latest"
