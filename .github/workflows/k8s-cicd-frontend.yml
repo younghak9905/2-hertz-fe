@@ -1,4 +1,4 @@
-name: Frontend Docker CI/CD
+name: k8s Frontend CI/CD
 
 on:
   pull_request:
